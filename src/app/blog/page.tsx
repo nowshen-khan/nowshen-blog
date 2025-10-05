@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar"
 import BlogFilter from "@/components/BlogFilter"
 import { getBlogs } from "@/lib/helpers/blogs" 
 
@@ -26,13 +25,8 @@ const blogPosts = [
 
 export default async function BlogPage() {
   const blogs = await getBlogs()
-  
-  
-  
-
   return (
     <>
-      
       <header className="py-16 bg-background text-center">
         <h1 className="text-4xl font-bold mb-2">Our Blog</h1>
         <p className="text-muted-foreground max-w-xl mx-auto">Read our latest articles, tutorials, and guides on web development and design.</p>

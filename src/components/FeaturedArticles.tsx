@@ -1,6 +1,4 @@
-import Image from "next/image"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import BlogCard from "./BlogCard"
 
 type Article = {
   title: string
@@ -58,31 +56,7 @@ export default function FeaturedArticles() {
 
         <div className="grid gap-8 md:grid-cols-3">
           {articles.map((article, index) => (
-            <Link
-              key={index}
-              href={article.href}
-              className="group block rounded-xl border border-border bg-card shadow-sm overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-lg"
-            >
-              <div className="relative w-full h-48">
-                <Image
-                  src={article.image}
-                  alt={article.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <div className="p-4">
-                <h3 className="text-xl font-semibold mb-2 text-foreground">
-                  {article.title}
-                </h3>
-                <p className="text-muted-foreground text-sm mb-4">
-                  {article.excerpt}
-                </p>
-                <Button size="sm" variant="outline">
-                  Read More
-                </Button>
-              </div>
-            </Link>
+              <BlogCard key={index} {...article} />
           ))}
         </div>
       </div>

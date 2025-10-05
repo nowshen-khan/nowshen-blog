@@ -1,6 +1,7 @@
 "use client"
 import { useEffect, useState } from "react"
 import BlogCard from "@/components/BlogCard"
+import Link from "next/link"
 
 type Blog = {
   _id: string
@@ -36,9 +37,9 @@ export default function RecentArticles() {
           ))}
         </div>
         <div className="text-center mt-8">
-          <a href="/blog" className="text-primary font-semibold hover:underline">
+          <Link href="/blog" className="text-primary font-semibold hover:underline">
             View All Articles →
-          </a>
+          </Link>
         </div>
       </div>
     </section>

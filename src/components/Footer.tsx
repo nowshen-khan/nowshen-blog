@@ -47,13 +47,34 @@ const footerLinks: FooterColumn[] = [
 ]
 
 export default function Footer() {
-  const pathname = usePathname()
+  const socialLinks = [
+    {
+      icon: <Mail size={18} />,
+      href: "mailto:demo@gmail.com",
+    },
+    {
+      icon:  <Twitter size={18} />,
+      href: "https://twitter.com/nowshen_khan",
+    },
+    {
+      icon:   <Instagram size={18} />,
+      href: "https://instagram.com",
+    },
+    {
+      icon:  <Linkedin size={18} />,
+      href: "https://linkedin.com",
+    },
+    {
+      icon:  <Github size={18} />,
+      href: "https://github.com/nowshen-khan",
+    }
+  ]
 
   return (
-    <footer className="border-t items-center border-border bg-background mt-10">
-      <div className="container py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8">
+    <footer className="border-t border-border bg-background mt-10 px-6">
+      <div className="container py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-5 px-10 ml-4">
         {/* Brand Section */}
-        <div>
+        <div className="col-span-2">
           <h2 className="text-xl font-bold mb-2">
             <span className="text-primary">Nowshen</span>
             <span className="text-muted-foreground">.blog</span>
@@ -62,27 +83,17 @@ export default function Footer() {
             Digital insights by Nowshen Anjuman Khan
           </p>
           <div className="flex items-center gap-3 text-muted-foreground">
-            <Link href="mailto:demo@gmail.com" className="hover:text-primary">
-              <Mail size={18} />
+            {socialLinks.map((item, index)=>(
+ <Link key={index} href={item.href} className="hover:text-primary">
+            {item.icon}
             </Link>
-            <Link href="https://twitter.com" className="hover:text-primary">
-              <Twitter size={18} />
-            </Link>
-            <Link href="https://instagram.com" className="hover:text-primary">
-              <Instagram size={18} />
-            </Link>
-            <Link href="https://linkedin.com" className="hover:text-primary">
-              <Linkedin size={18} />
-            </Link>
-            <Link href="https://github.com" className="hover:text-primary">
-              <Github size={18} />
-            </Link>
+            ))}
           </div>
         </div>
 
         {/* Dynamic Columns */}
         {footerLinks.map((col) => (
-          <div key={col.title}>
+          <div key={col.title} className="items-center justify-center">
             <h4 className="font-semibold mb-3 text-sm uppercase tracking-wider">
               {col.title}
             </h4>

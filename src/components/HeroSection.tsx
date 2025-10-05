@@ -25,11 +25,11 @@ export default function HeroSection() {
       {/* Image Section */}
       <div className="flex-1 mt-10 md:mt-0 flex justify-center">
         <Image
-          src="/hero-illustration.svg"
+          src="/hero-illustration.png"
           alt="Blog Hero"
-          width={450}
-          height={450}
-          className="drop-shadow-lg dark:opacity-90"
+          width={300}
+          height={200}
+          className="drop-shadow-lg dark:opacity-90 rounded-xl"
         />
       </div>
     </section>
