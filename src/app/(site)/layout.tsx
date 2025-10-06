@@ -5,18 +5,6 @@ import Navbar from "@/components/Navbar";
 import { Providers } from "@/app/providers"
 import Footer from "@/components/Footer";
 
-
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
   title: "Nowshen Blog",
   description: "Personal professional blog by Nowshen",

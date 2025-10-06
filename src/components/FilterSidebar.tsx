@@ -2,7 +2,7 @@
 
 // import { useState, useEffect } from "react"
 // import { Button } from "@/components/ui/button"
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+//import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 // type Props = {
 //   onFilterChange: (filters: {
@@ -110,13 +110,13 @@
 
 "use client"
 import { useEffect, useState } from "react"
-
+type Filters = {
+  category: string
+  tag: string
+  sort: "latest" | "oldest"
+}
 type FilterSidebarProps = {
-  onFilterChange: (filters: {
-    category: string
-    tag: string
-    sort: "latest" | "oldest"
-  }) => void
+  onFilterChange: (filters: Filters) => void
 }
 
 export default function FilterSidebar({ onFilterChange }: FilterSidebarProps) {
@@ -141,7 +141,7 @@ export default function FilterSidebar({ onFilterChange }: FilterSidebarProps) {
   // ✅ যখনই কোনো ফিল্টার চেঞ্জ হয়, প্যারেন্টে পাঠাও
   useEffect(() => {
     onFilterChange({ category: selectedCategory, tag: selectedTag, sort: sortOrder })
-  }, [selectedCategory, selectedTag, sortOrder])
+  }, [selectedCategory, selectedTag, sortOrder, onFilterChange])
 
   return (
     <aside className="p-4 border rounded-xl shadow-sm bg-white dark:bg-gray-800 space-y-4">
