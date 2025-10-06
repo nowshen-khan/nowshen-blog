@@ -6,7 +6,7 @@ if (!MONGODB_URI) {
   throw new Error("Please define the MONGODB_URI environment variable inside .env.local")
 }
 
-// ✅ declare global scope properly (not shadowed)
+// ✅ declare global scope properly
 declare global {
   // eslint-disable-next-line no-var
   var _mongoose: {
@@ -15,14 +15,18 @@ declare global {
   } | undefined
 }
 
-// ✅ use `_mongoose` instead of `mongoose` to avoid conflicts
-let cached = global._mongoose
-
-if (!cached) {
-  cached = global._mongoose = { conn: null, promise: null }
+// ✅ fallback always defined
+const cachedGlobal = global as typeof globalThis & {
+  _mongoose?: {
+    conn: typeof mongoose | null
+    promise: Promise<typeof mongoose> | null
+  }
 }
 
+const cached = cachedGlobal._mongoose ?? (cachedGlobal._mongoose = { conn: null, promise: null })
+
 export default async function connectDB() {
+  // ✅ এখন cached সবসময় defined থাকবে
   if (cached.conn) return cached.conn
 
   if (!cached.promise) {
