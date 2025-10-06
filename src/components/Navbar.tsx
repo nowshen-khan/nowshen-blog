@@ -119,7 +119,7 @@ const Navbar = () => {
               <Menu className="w-6 h-6" />
             </button>
           </SheetTrigger>
-          <SheetContent side="right" className="flex flex-col gap-4 mt-8">
+          <SheetContent side="right" className="flex flex-col gap-2 p-2">
             {menu.map((item, index) => (
               <Link
                 key={index}
@@ -129,7 +129,7 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
-            <div className="mt-4 border-t pt-4 flex justify-between items-center">
+            <div className="mt-4 border-t pt-4 p-2 flex justify-between items-center">
               {isLoggedIn ? (
                 <Link href="/profile" className="flex items-center gap-2">
                   <Avatar className="w-8 h-8">
