@@ -70,7 +70,7 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-border bg-background mt-10 px-6">
-      <div className="container py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-5 px-10 ml-4">
+      <div className="container py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-5 px-10">
         {/* Brand Section */}
         <div className="col-span-2">
           <h2 className="text-xl font-bold mb-2">
