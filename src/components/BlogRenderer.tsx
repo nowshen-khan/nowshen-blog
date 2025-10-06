@@ -50,3 +50,4 @@ export const BlogRenderer: FC<BlogRendererProps> = ({ contentBlocks }) => {
     </article>
   )
 }
+

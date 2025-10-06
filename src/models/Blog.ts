@@ -1,28 +1,31 @@
-import mongoose from "mongoose"
+import mongoose, { Schema, models } from 'mongoose'
 
-const ContentBlockSchema = new mongoose.Schema({
-  type: {
-    type: String,
-    enum: ["paragraph", "image", "quote", "code", "heading", "list"],
-    required: true,
-  },
-  content: { type: mongoose.Schema.Types.Mixed },
+const ContentBlockSchema = new Schema({
+type: { type: String, required: true, enum: [
+'paragraph','heading','image','code','list','quote','chart','video','embed'
+]},
+content: Schema.Types.Mixed,
+level: Number,
+language: String,
+items: [String],
+url: String,
+caption: String,
+chartData: Schema.Types.Mixed,
 })
 
-const BlogSchema = new mongoose.Schema(
+const BlogSchema = new Schema(
   {
     title: { type: String, required: true, trim: true },
-    slug: { type: String, required: true, unique: true },
+    slug: { type: String, required: true, unique: true , trim: true},
     excerpt: { type: String, trim: true },
     author: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
     category: {
       type: String,
-      enum: ["tutorial", "news", "opinion", "guide", "update"],
-      default: "tutorial",
+      default: "blog",
     },
     tags: [String],
     coverImage: { type: String },
@@ -31,8 +34,10 @@ const BlogSchema = new mongoose.Schema(
     views: { type: Number, default: 0 },
     readingTime: { type: Number },
     publishedAt: { type: Date },
+     isFeatured: { type: Boolean, default: false },
   },
   { timestamps: true }
 )
 
-export default mongoose.models.Blog || mongoose.model("Blog", BlogSchema)
+const Blog = models.Blog || mongoose.model('Blog', BlogSchema)
+export default Blog

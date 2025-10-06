@@ -14,7 +14,7 @@ type Blog = {
   publishedAt: string
 }
 
-export default function BlogGridPage() {
+export default function BlogPage() {
   const [blogs, setBlogs] = useState<Blog[]>([])
   const [filtered, setFiltered] = useState<Blog[]>([])
 
@@ -52,10 +52,11 @@ export default function BlogGridPage() {
             title={blog.title}
             excerpt={blog.excerpt}
             image={blog.coverImage}
-            href={`/article/${blog.slug}`}
+            href={`/blog/${blog.slug}`}
           />
         ))}
       </div>
+      
     </div>
   )
 }

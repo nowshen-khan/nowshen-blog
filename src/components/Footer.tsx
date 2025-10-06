@@ -1,7 +1,5 @@
-"use client"
-
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+
 import { Mail, Twitter, Instagram, Linkedin, Github, Heart } from "lucide-react"
 
 interface FooterColumn {
