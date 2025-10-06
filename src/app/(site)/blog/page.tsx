@@ -31,7 +31,8 @@ export default function BlogPage() {
   const handleFilterChange = (filters: { category?: string; tag?: string; date?: string }) => {
     let temp = blogs
     if (filters.category) temp = temp.filter(b => b.category === filters.category)
-    if (filters.tag) temp = temp.filter(b => b.tags.includes(filters.tag))
+    if (filters.tag) temp = temp.filter(b => b.tags.includes(filters.tag ?? ""))
+  
     if (filters.date) {
       const [year, month] = filters.date.split("-")
       temp = temp.filter(b => {
