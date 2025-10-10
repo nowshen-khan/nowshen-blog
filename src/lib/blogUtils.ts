@@ -1,4 +1,4 @@
-import { ContentBlock } from "@/components/BlogRenderer"
+import { ContentBlock } from "@/components/blog/BlogRenderer"
 
 export function calculateReadingTime(contentBlocks: ContentBlock[]): number {
   const wordsPerMinute = 200

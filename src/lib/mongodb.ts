@@ -1,46 +1,56 @@
-import mongoose from "mongoose"
+// lib/mongodb.ts
+import mongoose from 'mongoose';
+import '@/models/User'
+import '@/models/Blog'
 
-const MONGODB_URI = process.env.MONGODB_URI
+const MONGODB_URI = process.env.MONGODB_URI!;
 
 if (!MONGODB_URI) {
-  throw new Error("Please define the MONGODB_URI environment variable inside .env.local")
+  throw new Error('Please define the MONGODB_URI environment variable');
 }
 
-// ✅ declare global scope properly
+interface MongooseCache {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+}
+
 declare global {
-  // eslint-disable-next-line no-var
-  var _mongoose: {
-    conn: typeof mongoose | null
-    promise: Promise<typeof mongoose> | null
-  } | undefined
+  var mongoose: MongooseCache | undefined;
 }
 
-// ✅ fallback always defined
-const cachedGlobal = global as typeof globalThis & {
-  _mongoose?: {
-    conn: typeof mongoose | null
-    promise: Promise<typeof mongoose> | null
+let cached: MongooseCache = global.mongoose || {
+  conn: null,
+  promise: null,
+};
+
+if (!global.mongoose) {
+  global.mongoose = cached;
+}
+
+async function connectDB() {
+  if (cached.conn) {
+    return cached.conn;
   }
-}
-
-const cached = cachedGlobal._mongoose ?? (cachedGlobal._mongoose = { conn: null, promise: null })
-
-export default async function connectDB() {
-  // ✅ এখন cached সবসময় defined থাকবে
-  if (cached.conn) return cached.conn
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI!, {
+    const opts = {
       bufferCommands: false,
-    }).then((m) => m)
+    };
+
+    cached.promise = mongoose.connect(MONGODB_URI, opts);
   }
 
   try {
-    cached.conn = await cached.promise
+    cached.conn = await cached.promise;
+    console.log('Connected to MongoDB');
   } catch (e) {
-    cached.promise = null
-    throw e
+    cached.promise = null;
+    console.log('Error connecting to MongoDB:', e);
+    throw e;
+    
   }
 
-  return cached.conn
+  return cached.conn;
 }
+
+export default connectDB;

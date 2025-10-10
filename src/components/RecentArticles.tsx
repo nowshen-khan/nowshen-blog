@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
-import BlogCard from "@/components/BlogCard"
+import BlogCard from "@/components/blog/BlogCard"
 import Link from "next/link"
 
 type Blog = {

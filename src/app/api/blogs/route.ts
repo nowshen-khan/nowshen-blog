@@ -1,52 +1,63 @@
-import { NextResponse } from "next/server"
+import { NextResponse, NextRequest } from "next/server"
  import connectDB from "@/lib/mongodb"
-import Blog from "@/models/Blog"
+import { Blog } from "@/models/Blog"
 
-// export async function GET() {
-//   await connectDB()
-//   const blogs = await Blog.find({ isPublished: true })
-//     .sort({ publishedAt: -1 })
-//     .lean()
-//   return NextResponse.json(blogs)
-// }
+export async function GET(request: NextRequest) {
+  try {
+     await connectDB();
+    
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '10');
+    const category = searchParams.get('category');
+    const tag = searchParams.get('tag');
+    const search = searchParams.get('search');
+    const skip = (page - 1) * limit;
 
-export async function GET(req: Request) {
-  await connectDB()
+    // Build filter
+    const filter: any = { isPublished: true };
+    
+    if (category) {
+      filter.category = category;
+    }
+    
+    if (tag) {
+      filter.tags = { $in: [tag] };
+    }
+    
+    if (search) {
+      filter.$or = [
+        { title: { $regex: search, $options: 'i' } },
+        { excerpt: { $regex: search, $options: 'i' } },
+        { tags: { $in: [new RegExp(search, 'i')] } }
+      ];
+    }
 
-  const { searchParams } = new URL(req.url)
-  const type = searchParams.get("type")
-  const value = searchParams.get("value")
-  const limit = Number(searchParams.get("limit")) || 6
+    const [blogs, total] = await Promise.all([
+      Blog.find(filter)
+        .populate('author', 'name image')
+        .sort({ publishedAt: -1, createdAt: -1 })
+        .skip(skip)
+        .limit(limit),
+      Blog.countDocuments(filter)
+    ]);
 
-  let query = {}
-
-  switch (type) {
-    case "featured":
-      query = { isFeatured: true }
-      break
-    case "category":
-      query = { category: value }
-      break
-    case "tag":
-      query = { tags: { $in: [value] } }
-      break
-    case "search":
-      query = {
-        $or: [
-          { title: { $regex: value, $options: "i" } },
-          { excerpt: { $regex: value, $options: "i" } },
-          { content: { $regex: value, $options: "i" } },
-        ],
+    return NextResponse.json({
+      blogs,
+      pagination: {
+        page,
+        limit,
+        total,
+        pages: Math.ceil(total / limit),
       }
-      break
-    case "oldest":
-      return NextResponse.json(await Blog.find(query).sort({ createdAt: 1 }).limit(limit))
-    default: // recent, latest etc.
-      query = {}
+    }); 
+  } catch (error) {
+     console.error('Failed to fetch blogs:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
   }
-
-  const blogs = await Blog.find(query).sort({ createdAt: -1 }).limit(limit)
-  return NextResponse.json(blogs)
 }
 
 export async function POST(req: Request) {

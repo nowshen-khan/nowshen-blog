@@ -1,4 +1,4 @@
-import BlogCard from "./BlogCard"
+import BlogCard from "./blog/BlogCard"
 
 type Article = {
   title: string
