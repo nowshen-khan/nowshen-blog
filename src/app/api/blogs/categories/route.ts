@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import connect from "@/lib/mongodb"
-import Blog from "@/models/Blog"
+import { Blog } from "@/models/Blog"
 
 export async function GET() {
   await connect()

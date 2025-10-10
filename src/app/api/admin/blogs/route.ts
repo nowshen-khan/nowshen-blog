@@ -1,7 +1,7 @@
 // app/api/admin/blogs/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import { Blog } from '@/models/Blog'
-import connectDB from '@/lib/mongoose'
+import connectDB from '@/lib/mongodb'
 
 export async function GET() {
   try {
