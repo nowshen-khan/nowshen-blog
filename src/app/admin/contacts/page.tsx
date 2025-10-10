@@ -8,7 +8,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { 
   Mail, 
-  Phone, 
   Calendar,
   Eye,
   EyeOff,
@@ -16,7 +15,6 @@ import {
   Archive,
   Trash2,
   Search,
-  Filter
 } from 'lucide-react'
 
 interface Contact {
@@ -38,10 +36,6 @@ export default function AdminContactsPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
-
-  useEffect(() => {
-    fetchContacts()
-  }, [])
 
   useEffect(() => {
     filterContacts()

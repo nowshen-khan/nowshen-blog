@@ -4,6 +4,8 @@ import { Blog } from '@/models/Blog'
 import connectDB from '@/lib/mongodb'
 import BlogEditor from '@/components/admin/BlogEditor'
 import { updateBlog } from './actions'
+import { BlogDocument } from "@/models/Blog" 
+
 
 interface Props {
   params: {
@@ -18,7 +20,7 @@ export default async function EditBlogPage({ params }: Props) {
   
  if (!blog) notFound()
 
-  async function handleSave(blogData: any) {
+  async function handleSave(blogData: Partial<BlogDocument>) {
     "use server"
     await updateBlog(params.id, blogData)
   }

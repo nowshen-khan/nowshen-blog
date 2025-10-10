@@ -1,32 +1,13 @@
-// app/not-found.tsx
-
 'use client'
-//     type: 'website',
-//   },
-// }
 
-// ... (use any of the above component versions)
-// app/not-found.tsx (Interactive Version)
-
-
-import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Home, Search, ArrowRight, RotateCcw } from 'lucide-react'
+import { Home, ArrowRight, RotateCcw } from 'lucide-react'
 import SearchBar from '@/components/SearchBar'
 
 export default function NotFound() {
-  const [searchQuery, setSearchQuery] = useState('')
   const router = useRouter()
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (searchQuery.trim()) {
-      router.push(`/blog?search=${encodeURIComponent(searchQuery)}`)
-    }
-  }
 
   const handleGoBack = () => {
     if (window.history.length > 1) {
@@ -47,27 +28,32 @@ export default function NotFound() {
             </h1>
             <div className="absolute -inset-2 bg-gradient-to-r from-primary/20 to-purple-600/20 rounded-full blur-lg animate-pulse" />
           </div>
-          <h2 className="text-2xl font-bold text-foreground">
-            Page Not Found
-          </h2>
+          <h2 className="text-2xl font-bold text-foreground">Page Not Found</h2>
           <p className="text-muted-foreground">
-            The page you're looking for doesn't exist or has been moved.
+            The page you&apos;re looking for doesn&apos;t exist or has been moved.
           </p>
         </div>
 
         {/* Search Bar */}
-        <SearchBar initialSearch={searchQuery} placeholder='Search for articles, tutorials, or pages...' className="space-y-4" />
-         <p className="text-sm text-muted-foreground">
-            Try searching for what you're looking for
-          </p>
+        <SearchBar
+          placeholder="Search for articles, tutorials, or pages..."
+          className="space-y-4"
+        />
+        <p className="text-sm text-muted-foreground">
+          Try searching for what you&apos;re looking for
+        </p>
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Button onClick={handleGoBack} variant="outline" className="flex items-center gap-2">
+          <Button
+            onClick={handleGoBack}
+            variant="outline"
+            className="flex items-center gap-2"
+          >
             <RotateCcw className="w-4 h-4" />
             Go Back
           </Button>
-          
+
           <Button asChild className="flex items-center gap-2">
             <Link href="/">
               <Home className="w-4 h-4" />
@@ -98,13 +84,19 @@ export default function NotFound() {
           </div>
         </div>
 
-        {/* Error Details (for developers) */}
+        {/* Error Details */}
         <details className="text-left bg-muted rounded-lg p-4">
           <summary className="cursor-pointer font-medium">Technical Details</summary>
           <div className="mt-2 space-y-2 text-sm text-muted-foreground">
-            <p><strong>Error Code:</strong> 404 Not Found</p>
-            <p><strong>Message:</strong> The requested resource could not be located</p>
-            <p><strong>Solution:</strong> Check the URL or use the search above</p>
+            <p>
+              <strong>Error Code:</strong> 404 Not Found
+            </p>
+            <p>
+              <strong>Message:</strong> The requested resource could not be located
+            </p>
+            <p>
+              <strong>Solution:</strong> Check the URL or use the search above
+            </p>
           </div>
         </details>
       </div>

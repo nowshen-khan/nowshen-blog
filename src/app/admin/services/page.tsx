@@ -7,16 +7,12 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { 
   Plus, 
   Edit, 
   Trash2, 
   Save, 
   X,
-  GripVertical,
-  Eye,
-  EyeOff
 } from 'lucide-react'
 
 interface Service {
@@ -38,7 +34,7 @@ interface Service {
     keywords: string[]
   }
 }
-
+type PriceType = "one-time" | "monthly" | "yearly" | "free"
 export default function AdminServicesPage() {
   const [services, setServices] = useState<Service[]>([])
   const [editingService, setEditingService] = useState<Service | null>(null)
@@ -318,7 +314,7 @@ export default function AdminServicesPage() {
                       value={editingService.priceType}
                       onChange={(e) => setEditingService(prev => prev ? {
                         ...prev,
-                        priceType: e.target.value as any
+                        priceType: e.target.value as PriceType 
                       } : null)}
                       className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                     >

@@ -64,7 +64,7 @@ export async function PUT(
     }
 
     return NextResponse.json(service);
-  } catch (error: any) {
+  } catch (error) {
     console.error('Failed to update service:', error);
     
     if (error.code === 11000) {

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
-import { Contact } from '@/models/Contact';
+import { Contact } from '@/models/Contact';import { FilterQuery } from 'mongoose';
+import { BlogDocument } from '@/models/Blog';
+
 
 export async function POST(request: NextRequest) {
   try {
@@ -50,11 +52,11 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('Contact form error:', error);
     
     if (error.name === 'ValidationError') {
-      const errors = Object.values(error.errors).map((err: any) => err.message);
+      const errors = Object.values(error.errors).map((err) => err.message);
       return NextResponse.json(
         { error: errors.join(', ') },
         { status: 400 }
@@ -85,7 +87,7 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status');
     const skip = (page - 1) * limit;
 
-    const filter: any = {};
+    const filter: FilterQuery<BlogDocument> = {};
     if (status && status !== 'all') {
       filter.status = status;
     }

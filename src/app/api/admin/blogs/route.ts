@@ -9,7 +9,7 @@ export async function GET() {
     const blogs = await Blog.find().sort({ createdAt: -1 })
     return NextResponse.json(blogs)
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch blogs' }, { status: 500 })
+    return NextResponse.json({ error:   error.message || 'Failed to fetch blogs' }, { status: 500 })
   }
 }
 
@@ -26,6 +26,6 @@ export async function POST(request: NextRequest) {
     await blog.save()
     return NextResponse.json(blog)
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to create blog' }, { status: 500 })
+    return NextResponse.json({ error:  error.message || 'Failed to create blog' }, { status: 500 })
   }
 }

@@ -1,66 +1,105 @@
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { 
-  Calendar, 
-  User, 
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Calendar,
+  User,
   Clock,
   Eye,
   Heart,
   Tag,
   ArrowLeft,
   Share2,
-  Bookmark
-} from 'lucide-react';
-import connectDB from '@/lib/mongodb';
-import { Blog } from '@/models/Blog';
+  Bookmark,
+} from "lucide-react";
+import connectDB from "@/lib/mongodb";
+import { Blog } from "@/models/Blog";
 
 interface BlogPostProps {
   params: {
     slug: string;
-  }
+  };
 }
 
-export async function generateMetadata({ params }: BlogPostProps): Promise<Metadata> {
-  await connectDB();
-  
-  const {slug} = await params;
-  const blog = await Blog.findOne({ 
-    slug, 
-    isPublished: true 
-  }).populate('author', 'name');
+interface AuthorType {
+  name: string;
+  image?: string;
+}
 
-   const baseUrl = process.env.DEV ? process.env.Next_DEV_SITE_URL : process.env.NEXT_PUBLIC_SITE_URL
+interface ContentBlock {
+  type: "heading" | "paragraph" | "image" | "code" | "list" | "quote" | "video";
+  content?: string;
+  level?: number;
+  url?: string;
+  alt?: string;
+  caption?: string;
+  language?: string;
+  items?: string[];
+}
+
+interface BlogType {
+  _id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  tags: string[];
+  coverImage: string;
+  coverImageAlt?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  publishedAt: Date;
+  author: AuthorType;
+  readingTime: number;
+  views: number;
+  likes: number;
+  contentBlocks: ContentBlock[];
+}
+
+export async function generateMetadata({
+  params,
+}: BlogPostProps): Promise<Metadata> {
+  await connectDB();
+
+  const { slug } = params;
+  const blog = await Blog.findOne({
+    slug,
+    isPublished: true,
+  }).populate("author", "name");
+
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
   if (!blog) {
     return {
-      title: 'Post Not Found',
-      description: 'The requested blog post could not be found.',
-        metadataBase: new URL(baseUrl),
+      title: "Post Not Found",
+      description: "The requested blog post could not be found.",
+      metadataBase: new URL(baseUrl),
     };
   }
 
+  const b = blog.toObject() as BlogType;
+
   return {
-       metadataBase: new URL(baseUrl),
-    title: blog.metaTitle || blog.title,
-    description: blog.metaDescription || blog.excerpt,
-    keywords: blog.tags,
+    metadataBase: new URL(baseUrl),
+    title: b.metaTitle || b.title,
+    description: b.metaDescription || b.excerpt,
+    keywords: b.tags,
     openGraph: {
-      title: blog.metaTitle || blog.title,
-      description: blog.metaDescription || blog.excerpt,
-      type: 'article',
-      publishedTime: blog.publishedAt?.toISOString(),
-      authors: [blog.author.name],
+      title: b.metaTitle || b.title,
+      description: b.metaDescription || b.excerpt,
+      type: "article",
+      publishedTime: b.publishedAt?.toISOString(),
+      authors: [b.author.name],
       images: [
         {
-          url: blog.coverImage,
+          url: b.coverImage,
           width: 1200,
           height: 630,
-          alt: blog.coverImageAlt || blog.title,
+          alt: b.coverImageAlt || b.title,
         },
       ],
     },
@@ -69,62 +108,73 @@ export async function generateMetadata({ params }: BlogPostProps): Promise<Metad
 
 export default async function BlogPost({ params }: BlogPostProps) {
   await connectDB();
-  
-  const {slug} = await params;
-  const blog = await Blog.findOne({ 
-    slug, 
-    isPublished: true 
-  }).populate('author', 'name image');
 
-  if (!blog) {
+  const { slug } = params;
+  const blogDoc = await Blog.findOne({
+    slug,
+    isPublished: true,
+  }).populate("author", "name image");
+
+  if (!blogDoc) {
     notFound();
   }
+
+  const blog = blogDoc.toObject() as BlogType;
 
   // Increment view count
   await Blog.findByIdAndUpdate(blog._id, { $inc: { views: 1 } });
 
   // Get related posts
-  const relatedPosts = await Blog.find({
+  const relatedDocs = await Blog.find({
     _id: { $ne: blog._id },
     category: blog.category,
-    isPublished: true
+    isPublished: true,
   })
-    .populate('author', 'name')
+    .populate("author", "name")
     .sort({ publishedAt: -1 })
     .limit(3);
 
-  const renderContentBlock = (block: any, index: number) => {
+  const relatedPosts = relatedDocs.map((doc) => doc.toObject() as BlogType);
+
+  const renderContentBlock = (block: ContentBlock, index: number) => {
     switch (block.type) {
-      case 'heading':
+      case "heading": {
         const HeadingTag = `h${block.level || 2}` as keyof JSX.IntrinsicElements;
         return (
-          <HeadingTag 
+          <HeadingTag
             key={index}
             className={`mt-8 mb-4 font-bold text-slate-900 dark:text-slate-100 ${
-              block.level === 1 ? 'text-4xl' :
-              block.level === 2 ? 'text-3xl' :
-              block.level === 3 ? 'text-2xl' :
-              'text-xl'
+              block.level === 1
+                ? "text-4xl"
+                : block.level === 2
+                ? "text-3xl"
+                : block.level === 3
+                ? "text-2xl"
+                : "text-xl"
             }`}
           >
             {block.content}
           </HeadingTag>
         );
+      }
 
-      case 'paragraph':
+      case "paragraph":
         return (
-          <p key={index} className="mb-6 text-slate-700 dark:text-slate-300 leading-relaxed">
+          <p
+            key={index}
+            className="mb-6 text-slate-700 dark:text-slate-300 leading-relaxed"
+          >
             {block.content}
           </p>
         );
 
-      case 'image':
+      case "image":
         return (
           <div key={index} className="my-8">
             <div className="relative aspect-video rounded-lg overflow-hidden">
               <Image
-                src={block.url || ''}
-                alt={block.alt || ''}
+                src={block.url || ""}
+                alt={block.alt || ""}
                 fill
                 className="object-cover"
               />
@@ -137,43 +187,47 @@ export default async function BlogPost({ params }: BlogPostProps) {
           </div>
         );
 
-      case 'code':
+      case "code":
         return (
-          <pre key={index} className="my-6 p-4 bg-slate-900 text-slate-100 rounded-lg overflow-x-auto">
-            <code className={`language-${block.language || 'text'}`}>
+          <pre
+            key={index}
+            className="my-6 p-4 bg-slate-900 text-slate-100 rounded-lg overflow-x-auto"
+          >
+            <code className={`language-${block.language || "text"}`}>
               {block.content}
             </code>
           </pre>
         );
 
-      case 'list':
+      case "list":
         return (
           <ul key={index} className="my-6 space-y-2">
-            {block.items?.map((item: string, itemIndex: number) => (
+            {block.items?.map((item, itemIndex) => (
               <li key={itemIndex} className="flex items-start">
                 <span className="text-primary mr-2">•</span>
-                <span className="text-slate-700 dark:text-slate-300">{item}</span>
+                <span className="text-slate-700 dark:text-slate-300">
+                  {item}
+                </span>
               </li>
             ))}
           </ul>
         );
 
-      case 'quote':
+      case "quote":
         return (
-          <blockquote key={index} className="my-8 pl-6 border-l-4 border-primary italic text-slate-600 dark:text-slate-400">
+          <blockquote
+            key={index}
+            className="my-8 pl-6 border-l-4 border-primary italic text-slate-600 dark:text-slate-400"
+          >
             {block.content}
           </blockquote>
         );
 
-      case 'video':
+      case "video":
         return (
           <div key={index} className="my-8">
             <div className="aspect-video rounded-lg overflow-hidden">
-              <video
-                src={block.url}
-                controls
-                className="w-full h-full"
-              />
+              <video src={block.url} controls className="w-full h-full" />
             </div>
             {block.caption && (
               <p className="text-sm text-muted-foreground text-center mt-2">
@@ -235,10 +289,10 @@ export default async function BlogPost({ params }: BlogPostProps) {
               </div>
               <div className="flex items-center">
                 <Calendar className="w-4 h-4 mr-2" />
-                {new Date(blog.publishedAt).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
+                {new Date(blog.publishedAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
                 })}
               </div>
               <div className="flex items-center">
@@ -258,7 +312,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
             {/* Tags */}
             {blog.tags && blog.tags.length > 0 && (
               <div className="flex flex-wrap justify-center gap-2 mt-6">
-                {blog.tags.map((tag: string) => (
+                {blog.tags.map((tag) => (
                   <Badge key={tag} variant="outline" asChild>
                     <Link href={`/blog?tag=${tag}`}>
                       <Tag className="w-3 h-3 mr-1" />
@@ -283,7 +337,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
 
           {/* Content */}
           <div className="prose prose-slate dark:prose-invert max-w-none">
-            {blog.contentBlocks.map((block: any, index: number) => 
+            {blog.contentBlocks.map((block, index) =>
               renderContentBlock(block, index)
             )}
           </div>
@@ -314,12 +368,20 @@ export default async function BlogPost({ params }: BlogPostProps) {
       {relatedPosts.length > 0 && (
         <section className="py-16 bg-slate-50 dark:bg-slate-900">
           <div className="container mx-auto px-4 max-w-6xl">
-            <h2 className="text-3xl font-bold text-center mb-12">Related Articles</h2>
+            <h2 className="text-3xl font-bold text-center mb-12">
+              Related Articles
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {relatedPosts.map((post: any) => (
-                <Card key={post._id} className="hover:shadow-lg transition-shadow">
+              {relatedPosts.map((post) => (
+                <Card
+                  key={post._id}
+                  className="hover:shadow-lg transition-shadow"
+                >
                   <CardContent className="p-6">
-                    <Badge variant="secondary" className="mb-3 capitalize text-xs">
+                    <Badge
+                      variant="secondary"
+                      className="mb-3 capitalize text-xs"
+                    >
                       {post.category}
                     </Badge>
                     <Link href={`/blog/${post.slug}`}>
@@ -332,7 +394,9 @@ export default async function BlogPost({ params }: BlogPostProps) {
                     </p>
                     <div className="flex items-center justify-between text-xs text-muted-foreground">
                       <span>{post.author.name}</span>
-                      <span>{new Date(post.publishedAt).toLocaleDateString()}</span>
+                      <span>
+                        {new Date(post.publishedAt).toLocaleDateString()}
+                      </span>
                     </div>
                   </CardContent>
                 </Card>

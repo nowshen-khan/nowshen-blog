@@ -3,8 +3,9 @@
 import { revalidatePath } from "next/cache"
 import connectDB from "@/lib/mongodb"
 import { Blog } from "@/models/Blog"
+import { BlogDocument } from "@/models/Blog" 
 
-export async function updateBlog(id: string, data: any) {
+export async function updateBlog(id: string, data: Partial<BlogDocument>) {
   await connectDB()
 
   try {

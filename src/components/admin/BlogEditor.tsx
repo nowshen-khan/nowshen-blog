@@ -9,6 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import { BlogDocument, ContentBlock } from "@/models/Blog";
+import Image from "next/image";
 
 interface BlogEditorProps {
   blog?: BlogDocument;
@@ -74,7 +75,7 @@ export default function BlogEditor({ blog, onSave }: BlogEditorProps) {
       case "list":
         return <ul key={index} className="list-disc ml-6 my-2">{block.items?.map((item, i) => <li key={i}>{item}</li>)}</ul>;
       case "image":
-        return <img key={index} src={block.url} alt={block.alt || ""} className="my-2 max-w-full rounded" />;
+        return <Image key={index} src={block.url} alt={block.alt || ""} className="my-2 max-w-full rounded" />;
       case "video":
         return <video key={index} src={block.url} controls className="my-2 max-w-full rounded" />;
       default:
@@ -191,7 +192,7 @@ export default function BlogEditor({ blog, onSave }: BlogEditorProps) {
       <div className="p-6 rounded-lg shadow-inner overflow-auto max-h-[80vh]">
         <h1 className="text-3xl font-bold">{title}</h1>
         <p className="text-gray-600 mb-4">{excerpt}</p>
-        {coverImage && <img src={coverImage} alt={coverImageAlt} className="mb-4 max-w-full rounded" />}
+        {coverImage && <Image src={coverImage} alt={coverImageAlt} className="mb-4 max-w-full rounded" />}
         <div className="space-y-3">
           {contentBlocks
             .sort((a, b) => a.order - b.order)

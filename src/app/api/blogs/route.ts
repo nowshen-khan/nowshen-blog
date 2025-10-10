@@ -1,6 +1,8 @@
 import { NextResponse, NextRequest } from "next/server"
  import connectDB from "@/lib/mongodb"
 import { Blog } from "@/models/Blog"
+import { FilterQuery } from 'mongoose';
+import { BlogDocument } from '@/models/Blog';
 
 export async function GET(request: NextRequest) {
   try {
@@ -15,7 +17,7 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit;
 
     // Build filter
-    const filter: any = { isPublished: true };
+    const filter: FilterQuery<BlogDocument> = { isPublished: true };
     
     if (category) {
       filter.category = category;

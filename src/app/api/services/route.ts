@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
     await service.save();
 
     return NextResponse.json(service, { status: 201 });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Failed to create service:', error);
     
     if (error.code === 11000) {

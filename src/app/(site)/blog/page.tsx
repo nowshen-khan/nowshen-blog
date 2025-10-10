@@ -1,16 +1,8 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
   Search, 
-  Calendar, 
-  User, 
-  Clock,
-  Eye,
-  Heart,
   Tag,
   Filter
 } from 'lucide-react';
@@ -41,6 +33,13 @@ interface BlogPageProps {
   }
 }
 
+interface BlogFilter {
+  isPublished: boolean;
+  category?: string;
+  tags?: { $in: string[] };
+  $or?: Record<string, unknown>[];
+}
+
 export default async function BlogPage({ searchParams }: BlogPageProps) {
   await connectDB();
   
@@ -50,7 +49,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   const skip = (currentPage - 1) * limit;
 
   // Build filter
-  const filter: any = { isPublished: true };
+  const filter: BlogFilter = { isPublished: true };
   
   if (category) {
     filter.category = category;

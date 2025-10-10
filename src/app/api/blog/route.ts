@@ -11,7 +11,7 @@ export async function GET(request: Request) {
   const limit = parseInt(searchParams.get('limit') || '10')
   const category = searchParams.get('category')
   
-  const query: any = { isPublished: true }
+  const query:  Record<string, unknown> = { isPublished: true }
   if (category) query.category = category
   
   const blogs = await Blog.find(query)

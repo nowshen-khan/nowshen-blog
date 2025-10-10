@@ -53,7 +53,7 @@ export default async function ServicesPage() {
               <div className="text-6xl mb-4">🛠️</div>
               <h2 className="text-2xl font-bold mb-4">No Services Available</h2>
               <p className="text-muted-foreground mb-6">
-                We're currently updating our service offerings. Please check back soon!
+                We&#39;re currently updating our service offerings. Please check back soon!
               </p>
             </div>
           ) : (
@@ -88,7 +88,7 @@ export default async function ServicesPage() {
 
                     {/* Features */}
                     <div className="space-y-3">
-                      <h4 className="font-semibold text-sm text-center">What's Included:</h4>
+                      <h4 className="font-semibold text-sm text-center">What&#39;s Included:</h4>
                       <ul className="space-y-2">
                         {service.features.map((feature, featureIndex) => (
                           <li key={featureIndex} className="flex items-center text-sm">
@@ -119,7 +119,7 @@ export default async function ServicesPage() {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Let's discuss your project and find the perfect solution for your needs.
+            Let&#39;s discuss your project and find the perfect solution for your needs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" asChild>

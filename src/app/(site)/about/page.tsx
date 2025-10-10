@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import connectDB from '@/lib/mongodb';
 import { About } from '@/models/About';
+import Link from 'next/link';
 
 export async function generateMetadata(): Promise<Metadata> {
   await connectDB();
@@ -221,10 +222,10 @@ export default async function AboutPage() {
                           className="justify-start h-auto py-3"
                           asChild
                         >
-                          <a href={link.href} target="_blank" rel="noopener noreferrer">
+                          <Link href={link.href} target="_blank" rel="noopener noreferrer">
                             <link.icon className="w-4 h-4 mr-2" />
                             {link.label}
-                          </a>
+                          </Link>
                         </Button>
                       ))}
                     </div>
@@ -278,17 +279,17 @@ export default async function AboutPage() {
               {/* Call to Action */}
               <Card className="bg-gradient-to-r from-slate-900 to-slate-700 text-white">
                 <CardContent className="p-8 text-center">
-                  <h3 className="text-2xl font-bold mb-4">Let's Work Together</h3>
+                  <h3 className="text-2xl font-bold mb-4">Let&#39;s Work Together</h3>
                   <p className="text-slate-300 mb-6 max-w-2xl mx-auto">
                     Interested in collaborating or have a project in mind? 
-                    I'm always open to discussing new opportunities and creative ideas.
+                    I&#39;m always open to discussing new opportunities and creative ideas.
                   </p>
                   <div className="flex gap-4 justify-center">
                     <Button size="lg" asChild>
-                      <a href="/contact">Get In Touch</a>
+                      <Link href="/contact">Get In Touch</Link>
                     </Button>
                     <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-slate-900" asChild>
-                      <a href="/blog">Read My Blog</a>
+                      <Link href="/blog">Read My Blog</Link>
                     </Button>
                   </div>
                 </CardContent>

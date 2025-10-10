@@ -10,7 +10,6 @@ export async function PUT(
   try {
     await connectDB()
     const body = await request.json()
-    
     const blog = await Blog.findByIdAndUpdate(
       params.id,
       body,
@@ -23,7 +22,7 @@ export async function PUT(
     
     return NextResponse.json(blog)
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to update blog' }, { status: 500 })
+    return NextResponse.json({ error:  error.message || 'Failed to update blog' }, { status: 500 })
   }
 }
 
@@ -41,6 +40,6 @@ export async function DELETE(
     
     return NextResponse.json({ message: 'Blog deleted successfully' })
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to delete blog' }, { status: 500 })
+    return NextResponse.json({ error:  error.message || 'Failed to delete blog' }, { status: 500 })
   }
 }

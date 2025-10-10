@@ -2,16 +2,11 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
 import { 
   Mail, 
   Phone, 
   MapPin, 
   Clock,
-  Send,
-  CheckCircle
 } from 'lucide-react';
 import ContactForm from '@/components/contact/contact-form';
 
@@ -64,7 +59,7 @@ export default function ContactPage() {
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
               Have a project in mind or want to learn more about our services? 
-              We'd love to hear from you and discuss how we can help bring your ideas to life.
+              We&#39;d love to hear from you and discuss how we can help bring your ideas to life.
             </p>
           </div>
         </div>
@@ -77,10 +72,10 @@ export default function ContactPage() {
             {/* Contact Information */}
             <div className="lg:col-span-1 space-y-6">
               <div>
-                <h2 className="text-2xl font-bold mb-4">Let's Talk</h2>
+                <h2 className="text-2xl font-bold mb-4">Let&#39;s Talk</h2>
                 <p className="text-muted-foreground mb-8">
-                  We're here to answer any questions you may have about our services. 
-                  Reach out to us and we'll respond as soon as we can.
+                  We&#39;re here to answer any questions you may have about our services. 
+                  Reach out to us and we&#39;ll respond as soon as we can.
                 </p>
               </div>
 
@@ -141,7 +136,7 @@ export default function ContactPage() {
                 <CardHeader>
                   <CardTitle>Send us a message</CardTitle>
                   <CardDescription>
-                    Fill out the form below and we'll get back to you within 24 hours.
+                    Fill out the form below and we&#39;ll get back to you within 24 hours.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -159,7 +154,7 @@ export default function ContactPage() {
           <div className="text-center max-w-2xl mx-auto mb-12">
             <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
             <p className="text-muted-foreground">
-              Can't find the answer you're looking for? Reach out to our customer support team.
+              Can&#39;t find the answer you&#39;re looking for? Reach out to our customer support team.
             </p>
           </div>
 
