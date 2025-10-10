@@ -3,25 +3,29 @@ import "@/app/globals.css";
 import Navbar from "@/components/navbar/Navbar";
 import  ThemeProviders  from "@/components/providers/ThemeProviders"
 import Footer from "@/components/Footer";
+import { getSiteSettings } from "@/lib/site-settings"
+import { Toaster } from "@/components/ui/sonner"
 
 export const metadata: Metadata = {
   title: "Nowshen Blog",
   description: "Personal professional blog by Nowshen",
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+    const settings = await getSiteSettings()
   return (
       <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen bg-background text-foreground antialiased">
     
         <ThemeProviders>
-          <Navbar />
+          <Navbar  settings={settings} />
           <main>{children}</main>
-          <Footer />
+          <Toaster/>
+          <Footer  settings={settings} />
         </ThemeProviders>
      
       </body>

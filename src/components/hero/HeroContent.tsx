@@ -18,6 +18,8 @@ interface HeroContentProps {
 }
 
 export default function HeroContent({ data }: HeroContentProps) {
+  const { primary, secondary } = data.buttons;
+
   return (
     <div className="space-y-8">
       {/* Welcome Badge */}
@@ -58,16 +60,16 @@ export default function HeroContent({ data }: HeroContentProps) {
       {/* CTA Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 pt-4">
         <Button asChild size="lg" className="group">
-          <Link href={data.buttons.primary.href}>
-            {data.buttons.primary.text}
+          <Link href={primary.href}>
+            {primary.text}
             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
           </Link>
         </Button>
         
         <Button asChild variant="outline" size="lg">
-          <Link href={data.buttons.secondary.href} className="flex items-center gap-2">
+          <Link href={secondary.href} className="flex items-center gap-2">
             <Calendar className="w-4 h-4" />
-             {data.buttons.secondary.text}
+             {secondary.text}
           </Link>
         </Button>
       </div>

@@ -17,7 +17,7 @@ export default function RecentArticles() {
   useEffect(() => {
     fetch("/api/blogs")
       .then(res => res.json())
-      .then(data => setBlogs(data.slice(0, 4))) // recent 4 blogs
+      .then(data => setBlogs(data)) // recent 4 blogs .slice(0, 4)
   }, [])
 
   return (
