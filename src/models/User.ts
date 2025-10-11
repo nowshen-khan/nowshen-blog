@@ -65,6 +65,7 @@ const UserSchema = new Schema<UserDocument>(
   }
 );
 
+// Hash password
 UserSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   
@@ -83,21 +84,6 @@ UserSchema.methods.comparePassword = async function (
   return bcrypt.compare(candidatePassword, this.password);
 };
 
-// Static method to create first admin user
-UserSchema.statics.createFirstAdmin = async function () {
-  const adminCount = await this.countDocuments({ role: 'admin' });
-  if (adminCount === 0) {
-    const adminUser = new this({
-      name: process.env.ADMIN_NAME, // 'Admin'
-      email: process.env.ADMIN_EMAIL, // 'admin@example.com'
-      password: process.env.ADMIN_PASSWORD, // 'admin123'
-      role: 'admin',
-      emailVerified: true
-    });
-    await adminUser.save();
-    console.log('First admin user created:', adminUser.email);
-  }
-};
 
 export const User: Model<UserDocument> =
   mongoose.models.User || mongoose.model<UserDocument>('User', UserSchema);
