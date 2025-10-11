@@ -24,17 +24,8 @@ interface DesktopMenuProps {
 	pathname: string;
 	isLoggedIn: boolean;
 	isActive: (href: string, exact?: boolean) => boolean;
-	navLinks: { name: string; href: string; exact: boolean }[];
+	navLinks: { name: string; href: string; exact: boolean; order: number }[];
 }
-
-// export const navLinks = [
-// 	{ name: "Home", href: "/", exact: true },
-// 	{ name: "About", href: "/about" },
-// 	{ name: "Services", href: "/services" },
-// 	{ name: "Blog", href: "/blog" },
-// 	{ name: "Contact", href: "/contact" },
-// 	{ name: "Admin", href: "/admin" },
-// ];
 
 export const DesktopMenu = ({
 	pathname,

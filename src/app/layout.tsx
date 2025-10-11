@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "@/app/globals.css";
-import Navbar from "@/components/navbar/Navbar";
+import Navbar from "@/components/sitesettings/navbar/Navbar";
 import ThemeProviders from "@/components/providers/ThemeProviders";
-import Footer from "@/components/Footer";
+import Footer from "@/components/sitesettings/Footer";
 import { getSiteSettings } from "@/lib/site-settings";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -17,7 +17,10 @@ export default async function RootLayout({
 	children: React.ReactNode;
 }>) {
 	const settings = await getSiteSettings();
-	const { navbar, footer } = settings;
+
+	const navbar = settings?.navbar;
+	const footer = settings?.footer;
+
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body className="min-h-screen bg-background text-foreground antialiased">

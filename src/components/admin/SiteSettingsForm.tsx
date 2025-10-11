@@ -1,4 +1,3 @@
-// components/admin/SiteSettingsForm.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -12,75 +11,80 @@ import { toast } from "sonner";
 
 export default function SiteSettingsForm() {
 	const { settings, loading, updateSettings } = useSiteSettings();
-	const [formData, setFormData] = useState({});
+	const [formData, setFormData] = useState<any>({});
 	const [saving, setSaving] = useState(false);
 
 	useEffect(() => {
-		if (settings) {
-			setFormData(settings);
-		}
+		if (settings) setFormData(settings);
 	}, [settings]);
 
 	const handleSave = async () => {
 		setSaving(true);
 		try {
 			await updateSettings(formData);
-			// Show success message
 			toast.success("✅ Settings updated successfully");
 		} catch (error) {
-			// Show error message
 			toast.error("❌ Failed to save settings");
 		} finally {
 			setSaving(false);
 		}
 	};
 
-	const handleNavbarLinkChange = (
+	// 🔹 Navbar links helpers
+	const handleNavLinkChange = (
 		index: number,
-		field: "label" | "href",
+		field: "name" | "href",
 		value: string
 	) => {
-		const links = [...(formData.navbar?.links || [])];
-		links[index][field] = value;
-		setFormData({ ...formData, navbar: { ...formData.navbar, links } });
+		const navLinks = [...(formData.navbar?.navLinks || [])];
+		navLinks[index][field] = value;
+		setFormData({ ...formData, navbar: { ...formData.navbar, navLinks } });
 	};
 
-	const addNavbarLink = () => {
-		const links = [...(formData.navbar?.links || []), { label: "", href: "" }];
-		setFormData({ ...formData, navbar: { ...formData.navbar, links } });
+	const addNavLink = () => {
+		const navLinks = [
+			...(formData.navbar?.navLinks || []),
+			{ name: "", href: "" },
+		];
+		setFormData({ ...formData, navbar: { ...formData.navbar, navLinks } });
 	};
 
-	const removeNavbarLink = (index: number) => {
-		const links = [...(formData.navbar?.links || [])];
-		links.splice(index, 1);
-		setFormData({ ...formData, navbar: { ...formData.navbar, links } });
+	const removeNavLink = (index: number) => {
+		const navLinks = [...(formData.navbar?.navLinks || [])];
+		navLinks.splice(index, 1);
+		setFormData({ ...formData, navbar: { ...formData.navbar, navLinks } });
 	};
 
+	// 🔹 Footer links helpers
 	const handleFooterLinkChange = (
 		index: number,
 		field: "label" | "href",
 		value: string
 	) => {
-		const links = [...(formData.footer?.links || [])];
-		links[index][field] = value;
-		setFormData({ ...formData, footer: { ...formData.footer, links } });
+		const footerLinks = [...(formData.footer?.footerLinks || [])];
+		footerLinks[index][field] = value;
+		setFormData({ ...formData, footer: { ...formData.footer, footerLinks } });
 	};
 
 	const addFooterLink = () => {
-		const links = [...(formData.footer?.links || []), { label: "", href: "" }];
-		setFormData({ ...formData, footer: { ...formData.footer, links } });
+		const footerLinks = [
+			...(formData.footer?.footerLinks || []),
+			{ label: "", href: "" },
+		];
+		setFormData({ ...formData, footer: { ...formData.footer, footerLinks } });
 	};
 
 	const removeFooterLink = (index: number) => {
-		const links = [...(formData.footer?.links || [])];
-		links.splice(index, 1);
-		setFormData({ ...formData, footer: { ...formData.footer, links } });
+		const footerLinks = [...(formData.footer?.footerLinks || [])];
+		footerLinks.splice(index, 1);
+		setFormData({ ...formData, footer: { ...formData.footer, footerLinks } });
 	};
 
 	if (loading) return <div>Loading settings...</div>;
 
 	return (
 		<div className="space-y-6">
+			{/* 🌐 General */}
 			<Card>
 				<CardHeader>
 					<CardTitle>Site Settings</CardTitle>
@@ -110,7 +114,7 @@ export default function SiteSettingsForm() {
 				</CardContent>
 			</Card>
 
-			{/* Hero Section */}
+			{/* 🧠 Hero */}
 			<Card>
 				<CardHeader>
 					<CardTitle>Hero Section</CardTitle>
@@ -126,7 +130,6 @@ export default function SiteSettingsForm() {
 							})
 						}
 					/>
-
 					<Label>Hero Title</Label>
 					<Input
 						value={formData.hero?.title || ""}
@@ -137,12 +140,8 @@ export default function SiteSettingsForm() {
 							})
 						}
 					/>
-
-					<Label className="block text-sm font-medium mb-1">
-						Hero Subtitle
-					</Label>
+					<Label>Hero Subtitle</Label>
 					<Input
-						name="hero.subtitle"
 						value={formData.hero?.subtitle || ""}
 						onChange={(e) =>
 							setFormData({
@@ -151,12 +150,8 @@ export default function SiteSettingsForm() {
 							})
 						}
 					/>
-
-					<Label className="block text-sm font-medium mb-1">
-						Hero Description
-					</Label>
+					<Label>Description</Label>
 					<Textarea
-						name="hero.description"
 						value={formData.hero?.description || ""}
 						onChange={(e) =>
 							setFormData({
@@ -165,7 +160,6 @@ export default function SiteSettingsForm() {
 							})
 						}
 					/>
-
 					<Label>Start Year</Label>
 					<Input
 						type="number"
@@ -177,12 +171,10 @@ export default function SiteSettingsForm() {
 							})
 						}
 					/>
-					{/* Add more fields */}
 				</CardContent>
 			</Card>
 
-			{/* Need to work on */}
-			{/* Navbar Section */}
+			{/* 🧭 Navbar */}
 			<Card>
 				<CardHeader>
 					<CardTitle>Navbar</CardTitle>
@@ -198,42 +190,41 @@ export default function SiteSettingsForm() {
 							})
 						}
 					/>
-
 					<div className="space-y-2">
-						<Label>Links</Label>
-						{formData.navbar?.links?.map((link: any, idx: number) => (
+						<Label>Navigation Links</Label>
+						{formData.navbar?.navLinks?.map((link: any, idx: number) => (
 							<div key={idx} className="flex gap-2 items-center">
 								<Input
-									placeholder="Label"
-									value={link.label}
+									placeholder="Name"
+									value={link.name}
 									onChange={(e) =>
-										handleNavbarLinkChange(idx, "label", e.target.value)
+										handleNavLinkChange(idx, "name", e.target.value)
 									}
 								/>
 								<Input
 									placeholder="Href"
 									value={link.href}
 									onChange={(e) =>
-										handleNavbarLinkChange(idx, "href", e.target.value)
+										handleNavLinkChange(idx, "href", e.target.value)
 									}
 								/>
 								<Button
 									variant="destructive"
 									size="sm"
-									onClick={() => removeNavbarLink(idx)}
+									onClick={() => removeNavLink(idx)}
 								>
 									Remove
 								</Button>
 							</div>
 						))}
-						<Button size="sm" onClick={addNavbarLink}>
+						<Button size="sm" onClick={addNavLink}>
 							Add Link
 						</Button>
 					</div>
 				</CardContent>
 			</Card>
 
-			{/* Footer Section */}
+			{/* 🦶 Footer */}
 			<Card>
 				<CardHeader>
 					<CardTitle>Footer</CardTitle>
@@ -251,8 +242,8 @@ export default function SiteSettingsForm() {
 					/>
 
 					<div className="space-y-2">
-						<Label>Links</Label>
-						{formData.footer?.links?.map((link: any, idx: number) => (
+						<Label>Footer Links</Label>
+						{formData.footer?.footerLinks?.map((link: any, idx: number) => (
 							<div key={idx} className="flex gap-2 items-center">
 								<Input
 									placeholder="Label"
@@ -278,35 +269,47 @@ export default function SiteSettingsForm() {
 							</div>
 						))}
 						<Button size="sm" onClick={addFooterLink}>
-							Add Link
+							Add Footer Link
 						</Button>
 					</div>
 
-					{/* Social Links */}
-					<div className="space-y-2">
-						<Label>Social Links</Label>
-						{["facebook", "twitter", "github", "linkedin", "email"].map(
-							(key) => (
-								<Input
-									key={key}
-									placeholder={key}
-									value={formData.footer?.socialLinks?.[key] || ""}
-									onChange={(e) =>
-										setFormData({
-											...formData,
-											footer: {
-												...formData.footer,
-												socialLinks: {
-													...formData.footer?.socialLinks,
-													[key]: e.target.value,
-												},
-											},
-										})
-									}
-								/>
-							)
-						)}
-					</div>
+					<Label>Copyright Text</Label>
+					<Input
+						value={formData.footer?.copyrightText || ""}
+						onChange={(e) =>
+							setFormData({
+								...formData,
+								footer: { ...formData.footer, copyrightText: e.target.value },
+							})
+						}
+					/>
+				</CardContent>
+			</Card>
+
+			{/* 🌍 Social Links */}
+			<Card>
+				<CardHeader>
+					<CardTitle>Social Links</CardTitle>
+				</CardHeader>
+				<CardContent className="space-y-2">
+					{["facebook", "twitter", "github", "linkedin", "email"].map((key) => (
+						<div key={key}>
+							<Label className="capitalize">{key}</Label>
+							<Input
+								placeholder={key}
+								value={formData.socialLinks?.[key] || ""}
+								onChange={(e) =>
+									setFormData({
+										...formData,
+										socialLinks: {
+											...formData.socialLinks,
+											[key]: e.target.value,
+										},
+									})
+								}
+							/>
+						</div>
+					))}
 				</CardContent>
 			</Card>
 

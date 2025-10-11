@@ -1,0 +1,142 @@
+{
+	"_id": {
+		"$oid": "68e7e7b6ddac9ae36aa9d7d6"
+	},
+	"siteName": "Nowshen",
+	"title": "Nowshen - Web Developer & Blogger",
+	"description": "Personal blog about web development, programming tips, and tech journey",
+	"hero": {
+		"buttons": {
+			"primary": {
+				"text": "Read My Blog",
+				"href": "/blog"
+			},
+			"secondary": {
+				"text": "My Journey",
+				"href": "/about"
+			}
+		},
+		"startYear": 2024,
+		"welcomeText": "Welcome to My Digital Space",
+		"title": "Hi, I'm Nowshen",
+		"subtitle": "Web Developer & Blogger",
+		"description": "I write about web development, programming tips, and share my journey in tech...",
+		"expertise": ["JavaScript", "React", "Next.js", "TypeScript", "Node.js"],
+		"stats": [
+			{
+				"icon": "FileText",
+				"number": "50+",
+				"label": "Blogs Written",
+				"_id": {
+					"$oid": "68e7e7b6ddac9ae36aa9d7d7"
+				}
+			},
+			{
+				"icon": "Users",
+				"number": "3+",
+				"label": "Years Experience",
+				"_id": {
+					"$oid": "68e7e7b6ddac9ae36aa9d7d8"
+				}
+			},
+			{
+				"icon": "Clock",
+				"number": "Weekly",
+				"label": "New Content",
+				"_id": {
+					"$oid": "68e7e7b6ddac9ae36aa9d7d9"
+				}
+			}
+		]
+	},
+	"seoSettings": {
+		"keywords": []
+	},
+	"createdAt": {
+		"$date": "2025-10-09T16:49:58.794Z"
+	},
+	"updatedAt": {
+		"$date": "2025-10-11T15:30:42.673Z"
+	},
+	"__v": 0,
+	"navbar": {
+		"useImage": true,
+		"logoText": "blog.Nowshen",
+		"logoImage": "/logoNowshen.png",
+		"navLinks": [
+			{ "name": "Home", "href": "/", "exact": true, "order": 1 },
+			{ "name": "About", "href": "/about", "order": 2 },
+			{ "name": "Services", "href": "/services", "order": 3 },
+			{ "name": "Blog", "href": "/blog", "order": 4 },
+			{ "name": "Contact", "href": "/contact", "order": 5 }
+		]
+	},
+	"footer": {
+		"brand": {
+			"useImage": true,
+			"logoText": "blog.Nowshen",
+			"logoImage": "/logoNowshen.png",
+			"tagline": "Digital insights by Nowshen Anjuman Khan"
+		},
+		"columns": [
+			{
+				"title": "Category",
+				"links": [
+					{ "label": "CSS", "href": "/category/css", "order": 1 },
+					{ "label": "JavaScript", "href": "/category/javascript", "order": 2 },
+					{ "label": "Tailwind", "href": "/category/tailwind", "order": 3 },
+					{ "label": "React JS", "href": "/category/react", "order": 4 },
+					{ "label": "More Category", "href": "/categories", "order": 5 }
+				]
+			},
+			{
+				"title": "About Me",
+				"links": [
+					{ "label": "About", "href": "/about", "order": 1 },
+					{ "label": "Projects", "href": "/projects", "order": 2 },
+					{ "label": "Achievements", "href": "/achievements", "order": 3 }
+				]
+			},
+			{
+				"title": "Terms and Conditions",
+				"links": [
+					{ "label": "Privacy Policy", "href": "/privacy" },
+					{ "label": "Terms and Conditions", "href": "/terms" }
+				]
+			},
+			{
+				"title": "Get in Touch",
+				"links": [
+					{
+						"label": "+8801XXXXXXXXX",
+						"href": "tel:+8801XXXXXXXXX",
+						"order": 1
+					},
+					{
+						"label": "demo@gmail.com",
+						"href": "mailto:demo@gmail.com",
+						"order": 2
+					}
+				]
+			},
+			{
+				"title": "Follow Us",
+				"links": [
+					{ "label": "Medium", "href": "https://medium.com", "order": 1 },
+					{ "label": "Instagram", "href": "https://instagram.com", "order": 2 },
+					{ "label": "Twitter", "href": "https://twitter.com", "order": 3 },
+					{ "label": "Facebook", "href": "https://facebook.com", "order": 4 }
+				]
+			}
+		],
+		"socialLinks": {
+			"facebook": "https://facebook.com/nowshen",
+			"twitter": "https://twitter.com/nowshen",
+			"github": "https://github.com/nowshen",
+			"linkedin": "https://linkedin.com/in/nowshen",
+			"email": "hello@nowshen.com"
+		},
+		"location": "Gazipur, Bangladesh",
+		"copyright": "© 2025 blog.Nowshen"
+	}
+}

@@ -9,8 +9,10 @@ import Image from "next/image";
 
 interface NavbarProps {
 	data: {
+		useImage: boolean;
 		logoText: string;
-		navLinks: { name: string; href: string; exact: boolean }[];
+		logoImage: string;
+		navLinks: { name: string; href: string; exact?: boolean; order?: number }[];
 	};
 }
 
@@ -18,8 +20,8 @@ const Navbar = ({ data }: NavbarProps) => {
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const pathname = usePathname();
-	const { logoText, navLinks } = data;
-	const isLoggedIn = true; // test purpose (later replace with auth state)
+	const { useImage, logoText, logoImage, navLinks } = data;
+	const isLoggedIn = false; // test purpose (later replace with auth state)
 
 	// Handle scroll effect
 	useEffect(() => {
@@ -36,12 +38,18 @@ const Navbar = ({ data }: NavbarProps) => {
 		setIsMobileMenuOpen(false);
 	}, [pathname]);
 
+	// Active menu
 	const isActive = (href: string, exact: boolean = false) => {
 		if (exact) {
 			return pathname === href;
 		}
 		return pathname.startsWith(href);
 	};
+
+	// Sort navLinks by order
+	const sortedLinks = [...navLinks].sort(
+		(a, b) => (a.order || 0) - (b.order || 0)
+	);
 
 	return (
 		<nav
@@ -51,14 +59,14 @@ const Navbar = ({ data }: NavbarProps) => {
 			)}
 		>
 			{/* Logo */}
-			<Logo data={logoText} />
+			<Logo useImage={useImage} logoText={logoText} logoImage={logoImage} />
 
 			{/* Desktop Menu */}
 			<DesktopMenu
 				pathname={pathname}
 				isLoggedIn={isLoggedIn}
 				isActive={isActive}
-				navLinks={navLinks}
+				navLinks={sortedLinks}
 			/>
 
 			{/* Mobile Menu */}
@@ -68,7 +76,7 @@ const Navbar = ({ data }: NavbarProps) => {
 				pathname={pathname}
 				isLoggedIn={isLoggedIn}
 				isActive={isActive}
-				navLinks={navLinks}
+				navLinks={sortedLinks}
 			/>
 		</nav>
 	);
@@ -76,21 +84,28 @@ const Navbar = ({ data }: NavbarProps) => {
 
 export default Navbar;
 
-function Logo({ data }: NavbarProps) {
-	const { logoText } = data;
+interface LogoProps {
+	useImage: boolean;
+	logoText: string;
+	logoImage: string;
+}
+
+function Logo({ useImage, logoText, logoImage }: LogoProps) {
 	return (
 		<Link className="flex items-center gap-2 group" href="/">
-			<span className="font-bold text-xl bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-				{logoText}
-			</span>
-
-			<Image
-				src="/nowshenLogo.png"
-				alt="Nowshen Logo"
-				className="h-8 w-auto group-hover:scale-105 transition-all duration-300"
-				width={100}
-				height={100}
-			/>
+			{useImage ? (
+				<Image
+					src={logoImage}
+					alt="Nowshen Logo"
+					className="h-8 w-auto group-hover:scale-105 transition-all duration-300"
+					width={100}
+					height={100}
+				/>
+			) : (
+				<span className="font-bold text-xl bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+					{logoText}
+				</span>
+			)}
 		</Link>
 	);
 }
