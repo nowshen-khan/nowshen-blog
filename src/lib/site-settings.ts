@@ -7,7 +7,7 @@ export async function getSiteSettings() {
 	try {
 		await connectDB();
 
-		let settings = await SiteSettings.findOne();
+		const settings = await SiteSettings.findOne();
 
 		// 🧠 Fetch dynamic blog count
 		const blogCount = await Blog.countDocuments({ isPublished: true });
