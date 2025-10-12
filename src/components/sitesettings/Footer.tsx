@@ -1,52 +1,65 @@
 import Link from "next/link";
-import {
-	Mail,
-	Twitter,
-	Instagram,
-	Linkedin,
-	Github,
-	Heart,
-	Facebook,
-} from "lucide-react";
+import { Mail, Twitter, Linkedin, Github, Heart, Facebook } from "lucide-react";
 import Logo from "@/components/sitesettings/Logo";
-interface FooterLink {
-	label: string;
-	href: string;
-	order?: number;
-}
 
-interface FooterColumn {
-	title: string;
-	links: FooterLink[];
-}
-
-interface FooterData {
+const footer = {
 	brand: {
-		useImage: boolean;
-		logoText: string;
-		logoImage: string;
-		tagline: string;
-	};
-	columns: FooterColumn[];
+		useImage: false,
+		logoText: "blog.Nowshen",
+		logoImage: "/logoNowshen.png",
+		tagline: "Digital insights by Nowshen Anjuman Khan",
+	},
+	columns: [
+		{
+			title: "Category",
+			links: [
+				{ label: "CSS", href: "/category/css", order: 1 },
+				{ label: "JavaScript", href: "/category/javascript", order: 2 },
+				{ label: "Tailwind", href: "/category/tailwind", order: 3 },
+				{ label: "React JS", href: "/category/react", order: 4 },
+				{ label: "More Category", href: "/categories", order: 5 },
+			],
+		},
+		{
+			title: "About Me",
+			links: [
+				{ label: "About", href: "/about", order: 1 },
+				{ label: "Projects", href: "/projects", order: 2 },
+				{ label: "Achievements", href: "/achievements", order: 3 },
+			],
+		},
+		{
+			title: "Follow Us",
+			links: [
+				{ label: "Medium", href: "https://medium.com", order: 1 },
+				{ label: "Instagram", href: "https://instagram.com", order: 2 },
+				{ label: "Twitter", href: "https://twitter.com", order: 3 },
+				{ label: "Facebook", href: "https://facebook.com", order: 4 },
+			],
+		},
+		{
+			title: "Terms and Conditions",
+			links: [
+				{ label: "Privacy Policy", href: "/privacy" },
+				{ label: "Terms and Conditions", href: "/terms" },
+			],
+		},
+	],
 	socialLinks: {
-		facebook?: string;
-		twitter?: string;
-		github?: string;
-		instagram?: string;
-		linkedin?: string;
-		email?: string;
-	};
-	location: string;
-	copyright: string;
-}
+		facebook: "https://facebook.com/nowshen",
+		twitter: "https://twitter.com/nowshen",
+		github: "https://github.com/nowshen",
+		linkedin: "https://linkedin.com/in/nowshen",
+		email: "hello@nowshen.com",
+	},
+	location: "Gazipur, Bangladesh",
+	copyright: "© 2025 blog.Nowshen",
+};
 
-interface FooterProps {
-	data: FooterData;
-}
-
-export default function Footer({ data }: FooterProps) {
-	const { brand, columns, socialLinks, location, copyright } = data;
+export default function Footer() {
+	const { brand, columns, socialLinks, location, copyright } = footer;
 	const { useImage, logoText, logoImage } = brand;
+
 	const socials = [
 		{
 			icon: <Mail size={18} />,
@@ -61,10 +74,6 @@ export default function Footer({ data }: FooterProps) {
 			href: socialLinks.facebook,
 		},
 		{
-			icon: <Instagram size={18} />,
-			href: socialLinks.instragram,
-		},
-		{
 			icon: <Linkedin size={18} />,
 			href: socialLinks.linkedin,
 		},
@@ -75,8 +84,8 @@ export default function Footer({ data }: FooterProps) {
 	].filter((s) => s.href);
 
 	return (
-		<footer className="border-t border-border bg-background mt-10 px-6">
-			<div className="container py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-7 gap-4 px-10">
+		<footer className="border-t border-border mt-10 px-6">
+			<div className="container py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-4 px-10">
 				{/* Brand Section */}
 				<div className="col-span-2">
 					<Link href="/">
@@ -117,18 +126,16 @@ export default function Footer({ data }: FooterProps) {
 							{col.title}
 						</h4>
 						<ul className="space-y-1 text-sm">
-							{col.links
-								.sort((a, b) => (a.order || 0) - (b.order || 0))
-								.map((link) => (
-									<li key={link.label}>
-										<Link
-											href={link.href}
-											className="text-muted-foreground hover:text-primary transition"
-										>
-											{link.label}
-										</Link>
-									</li>
-								))}
+							{col.links.map((link) => (
+								<li key={link.label}>
+									<Link
+										href={link.href}
+										className="text-muted-foreground hover:text-primary transition"
+									>
+										{link.label}
+									</Link>
+								</li>
+							))}
 						</ul>
 					</div>
 				))}

@@ -58,11 +58,6 @@ export const DesktopMenu = ({
 											: "text-foreground/80"
 									)}
 								>
-									{item.icon && (
-										<span className="mr-2 text-muted-foreground">
-											{getIconComponent(item.icon, { size: 16 })}
-										</span>
-									)}
 									{item.label}
 									{isActive(item.href, item.exact) && (
 										<div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full transition-all duration-200" />
@@ -135,7 +130,8 @@ export const DesktopMenu = ({
 							<Link href="/login">Sign In</Link>
 						</Button>
 						<Button asChild size="sm">
-							<Link href="/register">Get Started</Link>
+							{/* <Link href="/register">Get Started</Link> */}
+							<Link href="#newsletter">Get Started</Link>
 						</Button>
 					</div>
 				)}
@@ -225,11 +221,6 @@ export const MobileMenu = ({
 									)}
 									onClick={() => setIsMobileMenuOpen(false)}
 								>
-									{item.icon && (
-										<span className="mr-2 text-muted-foreground">
-											{getIconComponent(item.icon, { size: 16 })}
-										</span>
-									)}
 									{item.label}
 								</Link>
 							))}

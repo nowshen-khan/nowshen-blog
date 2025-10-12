@@ -32,19 +32,14 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const settings = await getSiteSettings();
-
-	const navbar = settings?.navbar;
-	const footer = settings?.footer;
-
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body className="min-h-screen bg-background text-foreground antialiased">
 				<ThemeProviders>
-					{navbar && <Navbar data={navbar} />}
+					<Navbar />
 					<main>{children}</main>
 					<Toaster />
-					{footer && <Footer data={footer} />}
+					<Footer />
 				</ThemeProviders>
 			</body>
 		</html>

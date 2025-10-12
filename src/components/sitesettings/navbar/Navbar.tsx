@@ -1,33 +1,49 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { getIconComponent } from "@/lib/getIconComponent";
-import { DesktopMenu } from "./Menu"; // তোমার DesktopMenu component
-import { MobileMenu } from "./Menu"; // MobileMenu component
+import { DesktopMenu, MobileMenu } from "./Menu";
 import Logo from "@/components/sitesettings/Logo";
 
-interface NavbarProps {
-	data: {
-		useImage: boolean;
-		logoText: string;
-		logoImage: string;
-		navLinks: {
-			label: string;
-			href: string;
-			exact?: boolean;
-			order?: number;
-			icon?: string;
-		}[];
-	};
-}
+const navbar = {
+	useImage: false,
+	logoText: "Nowshen",
+	logoImage: "/nowshenLogo.png",
+	navLinks: [
+		{
+			href: "/",
+			exact: true,
+			order: 1,
+			label: "Home",
+		},
+		{
+			href: "/about",
+			order: 2,
+			label: "About",
+		},
+		{
+			href: "/services",
+			order: 3,
+			label: "Services",
+		},
+		{
+			href: "/blog",
+			order: 4,
+			label: "Blog",
+		},
+		{
+			href: "/contact",
+			order: 5,
+			label: "Contact",
+		},
+	],
+};
 
-const Navbar = ({ data }: NavbarProps) => {
+const Navbar = () => {
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const pathname = usePathname();
-	const { useImage, logoText, logoImage, navLinks } = data;
+	const { useImage, logoText, logoImage, navLinks } = navbar;
 	const isLoggedIn = false; // test purpose, later replace with auth state
 
 	// scroll effect
@@ -43,6 +59,7 @@ const Navbar = ({ data }: NavbarProps) => {
 	}, [pathname]);
 
 	const isActive = (href: string, exact: boolean = false) => {
+		if (!pathname) return false;
 		if (exact) return pathname === href;
 		return pathname.startsWith(href);
 	};
@@ -51,13 +68,6 @@ const Navbar = ({ data }: NavbarProps) => {
 	const sortedLinks = [...navLinks].sort(
 		(a, b) => (a.order || 0) - (b.order || 0)
 	);
-
-	// Map icon strings → React components
-	const menuItems = sortedLinks.map((link) => ({
-		label: link.label,
-		href: link.href,
-		icon: getIconComponent(link.icon, { size: 24, color: "dark" }),
-	}));
 
 	return (
 		<nav
@@ -74,7 +84,7 @@ const Navbar = ({ data }: NavbarProps) => {
 				pathname={pathname}
 				isLoggedIn={isLoggedIn}
 				isActive={isActive}
-				navLinks={menuItems}
+				navLinks={sortedLinks}
 			/>
 
 			{/* Mobile Menu */}
@@ -87,13 +97,8 @@ const Navbar = ({ data }: NavbarProps) => {
 				useImage={useImage}
 				logoText={logoText}
 				logoImage={logoImage}
-				navLinks={menuItems}
+				navLinks={sortedLinks}
 			/>
-
-			{/* CircleMenu for mobile/fun navigation */}
-			{/* <div className="w-full h-full flex items-center justify-center">
-				<CircleMenu items={menuItems} />
-			</div> */}
 		</nav>
 	);
 };

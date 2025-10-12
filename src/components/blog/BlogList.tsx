@@ -124,6 +124,8 @@ export default function BlogList({
 									<Link href={`/blog/${blog.slug}`}>
 										<div className="aspect-video relative overflow-hidden rounded-t-lg">
 											<Image
+												width={100}
+												height={100}
 												src={blog.coverImage}
 												alt={blog.coverImageAlt || blog.title}
 												className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
