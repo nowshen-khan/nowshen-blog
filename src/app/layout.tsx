@@ -6,10 +6,27 @@ import Footer from "@/components/sitesettings/Footer";
 import { getSiteSettings } from "@/lib/site-settings";
 import { Toaster } from "@/components/ui/sonner";
 
-export const metadata: Metadata = {
-	title: "Nowshen Blog",
-	description: "Personal professional blog by Nowshen",
-};
+export async function generateMetadata() {
+	const settings = await getSiteSettings();
+
+	if (!settings) return { title: "Nowshen Blog", description: "Personal Blog" };
+
+	return {
+		title: settings.title,
+		description: settings.description,
+		openGraph: {
+			title: settings.title,
+			description: settings.description,
+			url: "https://nowshen.com",
+			siteName: settings.siteName,
+		},
+		twitter: {
+			card: "summary_large_image",
+			title: settings.title,
+			description: settings.description,
+		},
+	};
+}
 
 export default async function RootLayout({
 	children,
@@ -25,10 +42,10 @@ export default async function RootLayout({
 		<html lang="en" suppressHydrationWarning>
 			<body className="min-h-screen bg-background text-foreground antialiased">
 				<ThemeProviders>
-					<Navbar data={navbar} />
+					{navbar && <Navbar data={navbar} />}
 					<main>{children}</main>
 					<Toaster />
-					<Footer data={footer} />
+					{footer && <Footer data={footer} />}
 				</ThemeProviders>
 			</body>
 		</html>

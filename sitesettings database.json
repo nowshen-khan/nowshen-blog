@@ -1,7 +1,4 @@
 {
-	"_id": {
-		"$oid": "68e7e7b6ddac9ae36aa9d7d6"
-	},
 	"siteName": "Nowshen",
 	"title": "Nowshen - Web Developer & Blogger",
 	"description": "Personal blog about web development, programming tips, and tech journey",
@@ -49,31 +46,48 @@
 			}
 		]
 	},
-	"seoSettings": {
-		"keywords": []
-	},
-	"createdAt": {
-		"$date": "2025-10-09T16:49:58.794Z"
-	},
-	"updatedAt": {
-		"$date": "2025-10-11T15:30:42.673Z"
-	},
-	"__v": 0,
+
 	"navbar": {
-		"useImage": true,
+		"useImage": false,
 		"logoText": "blog.Nowshen",
 		"logoImage": "/logoNowshen.png",
 		"navLinks": [
-			{ "name": "Home", "href": "/", "exact": true, "order": 1 },
-			{ "name": "About", "href": "/about", "order": 2 },
-			{ "name": "Services", "href": "/services", "order": 3 },
-			{ "name": "Blog", "href": "/blog", "order": 4 },
-			{ "name": "Contact", "href": "/contact", "order": 5 }
+			{
+				"href": "/",
+				"exact": true,
+				"order": 1,
+				"label": "Home",
+				"icon": "Home"
+			},
+			{
+				"href": "/about",
+				"order": 2,
+				"label": "About",
+				"icon": "User"
+			},
+			{
+				"href": "/services",
+				"order": 3,
+				"label": "Services",
+				"icon": "Package"
+			},
+			{
+				"href": "/blog",
+				"order": 4,
+				"label": "Blog",
+				"icon": "BookOpen"
+			},
+			{
+				"href": "/contact",
+				"order": 5,
+				"label": "Contact",
+				"icon": "Mail"
+			}
 		]
 	},
 	"footer": {
 		"brand": {
-			"useImage": true,
+			"useImage": false,
 			"logoText": "blog.Nowshen",
 			"logoImage": "/logoNowshen.png",
 			"tagline": "Digital insights by Nowshen Anjuman Khan"

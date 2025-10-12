@@ -1,18 +1,27 @@
 "use client";
+
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { DesktopMenu } from "./Menu";
-import { MobileMenu } from "./Menu";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
+import { getIconComponent } from "@/lib/getIconComponent";
+import { DesktopMenu } from "./Menu"; // তোমার DesktopMenu component
+import { MobileMenu } from "./Menu"; // MobileMenu component
+import Logo from "@/components/sitesettings/Logo";
 
 interface NavbarProps {
 	data: {
 		useImage: boolean;
 		logoText: string;
 		logoImage: string;
-		navLinks: { name: string; href: string; exact?: boolean; order?: number }[];
+		navLinks: {
+			label: string;
+			href: string;
+			exact?: boolean;
+			order?: number;
+			icon?: string;
+		}[];
 	};
 }
 
@@ -21,40 +30,41 @@ const Navbar = ({ data }: NavbarProps) => {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const pathname = usePathname();
 	const { useImage, logoText, logoImage, navLinks } = data;
-	const isLoggedIn = false; // test purpose (later replace with auth state)
+	const isLoggedIn = false; // test purpose, later replace with auth state
 
-	// Handle scroll effect
+	// scroll effect
 	useEffect(() => {
-		const handleScroll = () => {
-			setIsScrolled(window.scrollY > 10);
-		};
-
+		const handleScroll = () => setIsScrolled(window.scrollY > 10);
 		window.addEventListener("scroll", handleScroll);
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
 
-	// Close mobile menu when route changes
+	// close mobile menu on route change
 	useEffect(() => {
 		setIsMobileMenuOpen(false);
 	}, [pathname]);
 
-	// Active menu
 	const isActive = (href: string, exact: boolean = false) => {
-		if (exact) {
-			return pathname === href;
-		}
+		if (exact) return pathname === href;
 		return pathname.startsWith(href);
 	};
 
-	// Sort navLinks by order
+	// Sort navLinks
 	const sortedLinks = [...navLinks].sort(
 		(a, b) => (a.order || 0) - (b.order || 0)
 	);
 
+	// Map icon strings → React components
+	const menuItems = sortedLinks.map((link) => ({
+		label: link.label,
+		href: link.href,
+		icon: getIconComponent(link.icon, { size: 24, color: "dark" }),
+	}));
+
 	return (
 		<nav
 			className={cn(
-				"flex justify-between items-center px-4 sm:px-6 lg:px-8 py-3 bg-background/800 backdrop-blur-md border-b sticky top-0 z-50 transition-all duration-300",
+				"flex justify-between items-center px-4 sm:px-6 lg:px-8 py-3 bg-background/80 backdrop-blur-md border-b sticky top-0 z-50 transition-all duration-300",
 				isScrolled && "shadow-sm bg-background/95 py-2"
 			)}
 		>
@@ -66,7 +76,10 @@ const Navbar = ({ data }: NavbarProps) => {
 				pathname={pathname}
 				isLoggedIn={isLoggedIn}
 				isActive={isActive}
-				navLinks={sortedLinks}
+				navLinks={sortedLinks.map((link) => ({
+					...link,
+					icon: getIconComponent(link.icon, { size: 18 }),
+				}))}
 			/>
 
 			{/* Mobile Menu */}
@@ -76,36 +89,21 @@ const Navbar = ({ data }: NavbarProps) => {
 				pathname={pathname}
 				isLoggedIn={isLoggedIn}
 				isActive={isActive}
-				navLinks={sortedLinks}
+				useImage={useImage}
+				logoText={logoText}
+				logoImage={logoImage}
+				navLinks={sortedLinks.map((link) => ({
+					...link,
+					icon: getIconComponent(link.icon, { size: 18 }),
+				}))}
 			/>
+
+			{/* CircleMenu for mobile/fun navigation */}
+			{/* <div className="w-full h-full flex items-center justify-center">
+				<CircleMenu items={menuItems} />
+			</div> */}
 		</nav>
 	);
 };
 
 export default Navbar;
-
-interface LogoProps {
-	useImage: boolean;
-	logoText: string;
-	logoImage: string;
-}
-
-function Logo({ useImage, logoText, logoImage }: LogoProps) {
-	return (
-		<Link className="flex items-center gap-2 group" href="/">
-			{useImage ? (
-				<Image
-					src={logoImage}
-					alt="Nowshen Logo"
-					className="h-8 w-auto group-hover:scale-105 transition-all duration-300"
-					width={100}
-					height={100}
-				/>
-			) : (
-				<span className="font-bold text-xl bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-					{logoText}
-				</span>
-			)}
-		</Link>
-	);
-}

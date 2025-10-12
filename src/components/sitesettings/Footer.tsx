@@ -9,6 +9,8 @@ import {
 	Heart,
 	Facebook,
 } from "lucide-react";
+import Logo from "@/components/sitesettings/Logo";
+import { use } from "react";
 
 interface FooterLink {
 	label: string;
@@ -33,6 +35,7 @@ interface FooterData {
 		facebook?: string;
 		twitter?: string;
 		github?: string;
+		instagram?: string;
 		linkedin?: string;
 		email?: string;
 	};
@@ -46,6 +49,7 @@ interface FooterProps {
 
 export default function Footer({ data }: FooterProps) {
 	const { brand, columns, socialLinks, location, copyright } = data;
+	const { useImage, logoText, logoImage } = brand;
 	const socials = [
 		{
 			icon: <Mail size={18} />,
@@ -79,13 +83,11 @@ export default function Footer({ data }: FooterProps) {
 				{/* Brand Section */}
 				<div className="col-span-2">
 					<Link href="/">
-						{brand.useImage ? (
-							<Image
-								src={brand.logoImage}
-								alt={brand.logoText}
-								className="h-8 w-auto"
-								width={100}
-								height={100}
+						{useImage ? (
+							<Logo
+								useImage={useImage}
+								logoText={brand.logoText}
+								logoImage={brand.logoImage}
 							/>
 						) : (
 							<>

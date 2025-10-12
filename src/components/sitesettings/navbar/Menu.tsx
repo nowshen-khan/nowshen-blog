@@ -19,12 +19,20 @@ import { Button } from "@/components/ui/button";
 import ModeToggle from "@/components/mode-toggle";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { getIconComponent } from "@/lib/getIconComponent";
+import Logo from "@/components/sitesettings/Logo";
 
 interface DesktopMenuProps {
 	pathname: string;
 	isLoggedIn: boolean;
 	isActive: (href: string, exact?: boolean) => boolean;
-	navLinks: { name: string; href: string; exact: boolean; order: number }[];
+	navLinks: {
+		label: string;
+		href: string;
+		exact?: boolean;
+		order?: number;
+		icon?: string;
+	}[];
 }
 
 export const DesktopMenu = ({
@@ -51,9 +59,14 @@ export const DesktopMenu = ({
 											: "text-foreground/80"
 									)}
 								>
-									{item.name}
+									{item.icon && (
+										<span className="mr-2 text-muted-foreground">
+											{getIconComponent(item.icon, { size: 16 })}
+										</span>
+									)}
+									{item.label}
 									{isActive(item.href, item.exact) && (
-										<div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-primary rounded-full" />
+										<div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full transition-all duration-200" />
 									)}
 								</Link>
 							</NavigationMenuLink>
@@ -138,7 +151,16 @@ interface MobileMenuProps {
 	pathname: string;
 	isLoggedIn: boolean;
 	isActive: (href: string, exact?: boolean) => boolean;
-	navLinks: { name: string; href: string; exact: boolean }[];
+	useImage: boolean;
+	logoText: string;
+	logoImage: string;
+	navLinks: {
+		label: string;
+		href: string;
+		exact?: boolean;
+		order?: number;
+		icon?: string;
+	}[];
 }
 
 export const MobileMenu = ({
@@ -148,6 +170,9 @@ export const MobileMenu = ({
 	isLoggedIn,
 	isActive,
 	navLinks,
+	useImage,
+	logoText,
+	logoImage,
 }: MobileMenuProps) => {
 	return (
 		<div className="flex md:hidden items-center gap-3">
@@ -174,9 +199,14 @@ export const MobileMenu = ({
 							className="flex items-center gap-2"
 							onClick={() => setIsMobileMenuOpen(false)}
 						>
-							<span className="font-bold text-lg bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+							<Logo
+								useImage={useImage}
+								logoText={logoText}
+								logoImage={logoImage}
+							/>
+							{/* <span className="font-bold text-lg bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
 								Nowshen
-							</span>
+							</span> */}
 						</Link>
 					</div>
 
@@ -185,6 +215,7 @@ export const MobileMenu = ({
 						<nav className="grid gap-2">
 							{navLinks.map((item, index) => (
 								<Link
+									style={{ transitionDelay: `${index * 40}ms` }}
 									key={index}
 									href={item.href}
 									className={cn(
@@ -196,7 +227,12 @@ export const MobileMenu = ({
 									)}
 									onClick={() => setIsMobileMenuOpen(false)}
 								>
-									{item.name}
+									{item.icon && (
+										<span className="mr-2 text-muted-foreground">
+											{getIconComponent(item.icon, { size: 16 })}
+										</span>
+									)}
+									{item.label}
 								</Link>
 							))}
 						</nav>
