@@ -1,14 +1,30 @@
+// app/api/admin/blogs/[id]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { Blog, BlogDocument } from "@/models/Blog";
 import connectDB from "@/lib/mongodb";
+import { Document } from "mongoose";
 
+// ✅ Type for request body
+type BlogUpdateBody = Partial<Omit<BlogDocument, "_id">>;
+
+// ✅ Type-safe error handler
+const handleError = (error: unknown) => {
+	if (error instanceof Error) return error.message;
+	return "Something went wrong";
+};
+
+// ---------------- PUT ----------------
 export async function PUT(
 	request: NextRequest,
-	{ params }: { params: { id: string } }
-) {
+	context: { params: { id: string } }
+): Promise<NextResponse<BlogDocument | { error: string }>> {
+	const { params } = context;
+
 	try {
 		await connectDB();
-		const body = await request.json();
+
+		const body: BlogUpdateBody = await request.json();
+
 		const blog = await Blog.findByIdAndUpdate(params.id, body, {
 			new: true,
 			runValidators: true,
@@ -20,18 +36,20 @@ export async function PUT(
 
 		return NextResponse.json(blog);
 	} catch (error: unknown) {
-		let message = "Failed to update blog";
-		if (error instanceof Error) message = error.message;
-		return NextResponse.json({ error: message }, { status: 500 });
+		return NextResponse.json({ error: handleError(error) }, { status: 500 });
 	}
 }
 
+// ---------------- DELETE ----------------
 export async function DELETE(
 	request: NextRequest,
-	{ params }: { params: { id: string } }
-) {
+	context: { params: { id: string } }
+): Promise<NextResponse<{ message: string } | { error: string }>> {
+	const { params } = context;
+
 	try {
 		await connectDB();
+
 		const blog = await Blog.findByIdAndDelete(params.id);
 
 		if (!blog) {
@@ -40,8 +58,6 @@ export async function DELETE(
 
 		return NextResponse.json({ message: "Blog deleted successfully" });
 	} catch (error: unknown) {
-		let message = "Failed to delete blog";
-		if (error instanceof Error) message = error.message;
-		return NextResponse.json({ error: message }, { status: 500 });
+		return NextResponse.json({ error: handleError(error) }, { status: 500 });
 	}
 }
