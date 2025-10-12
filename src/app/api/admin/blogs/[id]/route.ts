@@ -2,12 +2,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Blog, BlogDocument } from "@/models/Blog";
 import connectDB from "@/lib/mongodb";
-import { Document } from "mongoose";
 
-// ✅ Type for request body
+// Type for request body
 type BlogUpdateBody = Partial<Omit<BlogDocument, "_id">>;
 
-// ✅ Type-safe error handler
+// Error handler
 const handleError = (error: unknown) => {
 	if (error instanceof Error) return error.message;
 	return "Something went wrong";
@@ -16,10 +15,8 @@ const handleError = (error: unknown) => {
 // ---------------- PUT ----------------
 export async function PUT(
 	request: NextRequest,
-	context: { params: { id: string } }
-): Promise<NextResponse<BlogDocument | { error: string }>> {
-	const { params } = context;
-
+	{ params }: { params: Record<string, string> } // ✅ use Record<string,string>
+) {
 	try {
 		await connectDB();
 
@@ -43,10 +40,8 @@ export async function PUT(
 // ---------------- DELETE ----------------
 export async function DELETE(
 	request: NextRequest,
-	context: { params: { id: string } }
-): Promise<NextResponse<{ message: string } | { error: string }>> {
-	const { params } = context;
-
+	{ params }: { params: Record<string, string> } // ✅ same fix
+) {
 	try {
 		await connectDB();
 
