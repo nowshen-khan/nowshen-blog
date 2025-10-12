@@ -1,7 +1,6 @@
-// app/api/admin/blogs/[id]/route.ts
 import { NextRequest, NextResponse } from "next/server";
+import { Blog, BlogDocument } from "@/models/Blog";
 import connectDB from "@/lib/mongodb";
-import { Blog } from "@/models/Blog";
 
 export async function PUT(
 	request: NextRequest,
@@ -9,9 +8,7 @@ export async function PUT(
 ) {
 	try {
 		await connectDB();
-
 		const body = await request.json();
-
 		const blog = await Blog.findByIdAndUpdate(params.id, body, {
 			new: true,
 			runValidators: true,
@@ -22,11 +19,10 @@ export async function PUT(
 		}
 
 		return NextResponse.json(blog);
-	} catch (error: any) {
-		return NextResponse.json(
-			{ error: error.message || "Failed to update blog" },
-			{ status: 500 }
-		);
+	} catch (error: unknown) {
+		let message = "Failed to update blog";
+		if (error instanceof Error) message = error.message;
+		return NextResponse.json({ error: message }, { status: 500 });
 	}
 }
 
@@ -36,7 +32,6 @@ export async function DELETE(
 ) {
 	try {
 		await connectDB();
-
 		const blog = await Blog.findByIdAndDelete(params.id);
 
 		if (!blog) {
@@ -44,10 +39,9 @@ export async function DELETE(
 		}
 
 		return NextResponse.json({ message: "Blog deleted successfully" });
-	} catch (error: any) {
-		return NextResponse.json(
-			{ error: error.message || "Failed to delete blog" },
-			{ status: 500 }
-		);
+	} catch (error: unknown) {
+		let message = "Failed to delete blog";
+		if (error instanceof Error) message = error.message;
+		return NextResponse.json({ error: message }, { status: 500 });
 	}
 }
