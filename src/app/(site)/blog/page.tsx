@@ -1,9 +1,8 @@
-import { Metadata } from "next";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search, Tag, Filter } from "lucide-react";
 import connectDB from "@/lib/mongodb";
-import { Blog } from "@/models/Blog";
+import { Blog, BlogType } from "@/models/Blog";
 import { Suspense } from "react";
 import SearchBar from "@/components/SearchBar";
 import BlogList from "@/components/blog/BlogList";
@@ -76,6 +75,15 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 		{ $sort: { count: -1 } },
 		{ $limit: 10 },
 	]);
+
+	// Featured Posts fetch
+	const featuredPosts: BlogType[] = await Blog.find({
+		isPublished: true,
+		isFeatured: true,
+	})
+		.populate("author", "name image")
+		.sort({ publishedAt: -1 })
+		.limit(3);
 
 	return (
 		<div className="min-h-screen bg-background">
@@ -207,12 +215,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 								</CardHeader>
 								<CardContent>
 									<div className="space-y-4">
-										{(
-											await Blog.find({ isPublished: true, isFeatured: true })
-												.populate("author", "name")
-												.sort({ publishedAt: -1 })
-												.limit(3)
-										).map((blog: any) => (
+										{featuredPosts.map((blog) => (
 											<Link
 												key={blog._id}
 												href={`/blog/${blog.slug}`}
@@ -224,7 +227,11 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 															{blog.title}
 														</h4>
 														<p className="text-xs text-muted-foreground mt-1">
-															{new Date(blog.publishedAt).toLocaleDateString()}
+															{blog.publishedAt
+																? new Date(
+																		blog.publishedAt
+																  ).toLocaleDateString()
+																: ""}
 														</p>
 													</div>
 												</div>
@@ -239,7 +246,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 						<div className="lg:col-span-3">
 							<Suspense fallback={<BlogListSkeleton />}>
 								<BlogList
-									blogs={JSON.parse(JSON.stringify(blogs))} // Serialize for client component
+									blogs={JSON.parse(JSON.stringify(blogs))}
 									totalBlogs={totalBlogs}
 									category={category}
 									tag={tag}

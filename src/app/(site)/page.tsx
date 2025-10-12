@@ -1,8 +1,8 @@
 import HeroSection from "@/components/hero/HeroSection";
 import FeaturedArticles from "@/components/FeaturedArticles";
-import RecentArticles from "@/components/RecentArticles";
+// import RecentArticles from "@/components/RecentArticles";
 import CTASection from "@/components/CTASection";
-import BlogSection from "@/components/blog/BlogSection";
+// import BlogSection from "@/components/blog/BlogSection";
 
 export default function HomePage() {
 	return (

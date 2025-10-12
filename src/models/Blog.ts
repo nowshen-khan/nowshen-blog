@@ -13,6 +13,36 @@ export interface ContentBlock {
 	order: number;
 }
 
+export interface BlogType {
+	_id: string;
+	title: string;
+	slug: string;
+	excerpt: string;
+	author:
+		| {
+				_id?: string;
+				name: string;
+				image?: string;
+		  }
+		| string; // populated or just ObjectId
+	category: string;
+	tags: string[];
+	coverImage: string;
+	coverImageAlt?: string;
+	contentBlocks: ContentBlock[];
+	metaTitle?: string;
+	metaDescription?: string;
+	isPublished: boolean;
+	isFeatured: boolean;
+	views: number;
+	likes: number;
+	readingTime: number;
+	wordCount: number;
+	publishedAt?: Date;
+	createdAt: Date;
+	updatedAt: Date;
+}
+
 export interface BlogDocument extends Document {
 	title: string;
 	slug: string;
