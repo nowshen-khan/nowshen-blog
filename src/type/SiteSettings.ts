@@ -1,6 +1,4 @@
-import { Icon } from "lucide-react"; // if you want to type icons
-
-export interface SiteSettings {
+export interface SiteSettingsType {
 	siteName: string;
 	title: string;
 	description: string;

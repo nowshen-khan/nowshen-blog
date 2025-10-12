@@ -1,9 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { getIconComponent } from "@/lib/getIconComponent";
 import { DesktopMenu } from "./Menu"; // তোমার DesktopMenu component
@@ -76,10 +74,7 @@ const Navbar = ({ data }: NavbarProps) => {
 				pathname={pathname}
 				isLoggedIn={isLoggedIn}
 				isActive={isActive}
-				navLinks={sortedLinks.map((link) => ({
-					...link,
-					icon: getIconComponent(link.icon, { size: 18 }),
-				}))}
+				navLinks={menuItems}
 			/>
 
 			{/* Mobile Menu */}
@@ -92,10 +87,7 @@ const Navbar = ({ data }: NavbarProps) => {
 				useImage={useImage}
 				logoText={logoText}
 				logoImage={logoImage}
-				navLinks={sortedLinks.map((link) => ({
-					...link,
-					icon: getIconComponent(link.icon, { size: 18 }),
-				}))}
+				navLinks={menuItems}
 			/>
 
 			{/* CircleMenu for mobile/fun navigation */}

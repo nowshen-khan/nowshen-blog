@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import "@/app/globals.css";
 import Navbar from "@/components/sitesettings/navbar/Navbar";
 import ThemeProviders from "@/components/providers/ThemeProviders";

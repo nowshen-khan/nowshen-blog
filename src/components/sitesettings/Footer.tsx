@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import {
 	Mail,
 	Twitter,
@@ -10,8 +9,6 @@ import {
 	Facebook,
 } from "lucide-react";
 import Logo from "@/components/sitesettings/Logo";
-import { use } from "react";
-
 interface FooterLink {
 	label: string;
 	href: string;

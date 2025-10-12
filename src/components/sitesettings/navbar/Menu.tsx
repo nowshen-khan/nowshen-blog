@@ -1,4 +1,4 @@
-import { Menu, User, X, ChevronDown } from "lucide-react";
+import { Menu, User, X } from "lucide-react";
 import {
 	NavigationMenu,
 	NavigationMenuItem,
@@ -36,7 +36,6 @@ interface DesktopMenuProps {
 }
 
 export const DesktopMenu = ({
-	pathname,
 	isLoggedIn,
 	isActive,
 	navLinks,
@@ -166,7 +165,6 @@ interface MobileMenuProps {
 export const MobileMenu = ({
 	isMobileMenuOpen,
 	setIsMobileMenuOpen,
-	pathname,
 	isLoggedIn,
 	isActive,
 	navLinks,

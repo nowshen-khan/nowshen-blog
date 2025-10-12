@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { Button } from "@/components/ui/button";
@@ -8,8 +7,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "../ui/label";
 import { toast } from "sonner";
-
-import { SiteSettings as SiteSettingsType } from "@/types/SiteSettings";
+import {
+	SiteSettingsType,
+	NavLink,
+	FooterLink,
+	FooterColumn,
+} from "@/types/SiteSettings";
 export default function SiteSettingsForm() {
 	const { settings, loading, updateSettings } = useSiteSettings();
 	const [formData, setFormData] = useState<SiteSettingsType | null>(null);
@@ -24,7 +27,7 @@ export default function SiteSettingsForm() {
 		try {
 			await updateSettings(formData);
 			toast.success("✅ Settings updated successfully");
-		} catch (error) {
+		} catch {
 			toast.error("❌ Failed to save settings");
 		} finally {
 			setSaving(false);
@@ -197,7 +200,7 @@ export default function SiteSettingsForm() {
 					/>
 					<div className="space-y-2">
 						<Label>Navigation Links</Label>
-						{formData.navbar?.navLinks?.map((link: any, idx: number) => (
+						{formData.navbar?.navLinks?.map((link: NavLink, idx: number) => (
 							<div key={idx} className="flex gap-2 items-center">
 								<Input
 									placeholder="Label"
@@ -259,61 +262,63 @@ export default function SiteSettingsForm() {
 					{/* Footer Columns */}
 					<Label>Footer Columns</Label>
 					<div className="space-y-4">
-						{formData.footer?.columns?.map((col: any, colIdx: number) => (
-							<div key={colIdx} className="border p-3 rounded-md space-y-2">
-								<Label className="font-semibold">{col.title}</Label>
-								<div className="space-y-2">
-									{col.links.map((link: any, linkIdx: number) => (
-										<div
-											key={linkIdx}
-											className="flex flex-col sm:flex-row sm:items-center sm:gap-2"
-										>
-											<Input
-												placeholder="Label"
-												className="w-full sm:w-1/3"
-												value={link.label}
-												onChange={(e) =>
-													handleFooterLinkChange(
-														colIdx,
-														linkIdx,
-														"label",
-														e.target.value
-													)
-												}
-											/>
-											<Input
-												placeholder="Href"
-												className="w-full sm:w-1/3"
-												value={link.href}
-												onChange={(e) =>
-													handleFooterLinkChange(
-														colIdx,
-														linkIdx,
-														"href",
-														e.target.value
-													)
-												}
-											/>
-											<Button
-												variant="destructive"
-												size="sm"
-												className="w-full sm:w-auto"
-												onClick={() => removeFooterLink(colIdx, linkIdx)}
+						{formData.footer?.columns?.map(
+							(col: FooterColumn, colIdx: number) => (
+								<div key={colIdx} className="border p-3 rounded-md space-y-2">
+									<Label className="font-semibold">{col.title}</Label>
+									<div className="space-y-2">
+										{col.links.map((link: FooterLink, linkIdx: number) => (
+											<div
+												key={linkIdx}
+												className="flex flex-col sm:flex-row sm:items-center sm:gap-2"
 											>
-												Remove
-											</Button>
-										</div>
-									))}
-									<Button
-										size="sm"
-										className="mt-1"
-										onClick={() => addFooterLink(colIdx)}
-									>
-										Add Footer Link
-									</Button>
+												<Input
+													placeholder="Label"
+													className="w-full sm:w-1/3"
+													value={link.label}
+													onChange={(e) =>
+														handleFooterLinkChange(
+															colIdx,
+															linkIdx,
+															"label",
+															e.target.value
+														)
+													}
+												/>
+												<Input
+													placeholder="Href"
+													className="w-full sm:w-1/3"
+													value={link.href}
+													onChange={(e) =>
+														handleFooterLinkChange(
+															colIdx,
+															linkIdx,
+															"href",
+															e.target.value
+														)
+													}
+												/>
+												<Button
+													variant="destructive"
+													size="sm"
+													className="w-full sm:w-auto"
+													onClick={() => removeFooterLink(colIdx, linkIdx)}
+												>
+													Remove
+												</Button>
+											</div>
+										))}
+										<Button
+											size="sm"
+											className="mt-1"
+											onClick={() => addFooterLink(colIdx)}
+										>
+											Add Footer Link
+										</Button>
+									</div>
 								</div>
-							</div>
-						))}
+							)
+						)}
 					</div>
 
 					{/* Copyright */}
