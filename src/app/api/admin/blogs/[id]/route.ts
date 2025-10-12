@@ -15,14 +15,15 @@ const handleError = (error: unknown) => {
 // ---------------- PUT ----------------
 export async function PUT(
 	request: NextRequest,
-	{ params }: { params: Record<string, string> } // ✅ use Record<string,string>
+	{ params }: { params: Promise<{ id: string }> } // ✅ params is now a Promise
 ) {
 	try {
 		await connectDB();
-
+		const { id } = await params; // ✅ Await the params
 		const body: BlogUpdateBody = await request.json();
 
-		const blog = await Blog.findByIdAndUpdate(params.id, body, {
+		const blog = await Blog.findByIdAndUpdate(id, body, {
+			// ✅ Use the awaited id
 			new: true,
 			runValidators: true,
 		});
@@ -40,12 +41,13 @@ export async function PUT(
 // ---------------- DELETE ----------------
 export async function DELETE(
 	request: NextRequest,
-	{ params }: { params: Record<string, string> } // ✅ same fix
+	{ params }: { params: Promise<{ id: string }> } // ✅ Same fix
 ) {
 	try {
 		await connectDB();
+		const { id } = await params; // ✅ Await the params
 
-		const blog = await Blog.findByIdAndDelete(params.id);
+		const blog = await Blog.findByIdAndDelete(id); // ✅ Use the awaited id
 
 		if (!blog) {
 			return NextResponse.json({ error: "Blog not found" }, { status: 404 });
