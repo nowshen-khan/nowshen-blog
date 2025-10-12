@@ -14,6 +14,7 @@ import {
 	Heart,
 	Tag as TagIcon,
 } from "lucide-react";
+import Image from "next/image";
 
 interface Blog {
 	_id: string;
@@ -122,7 +123,7 @@ export default function BlogList({
 								<CardHeader className="p-0">
 									<Link href={`/blog/${blog.slug}`}>
 										<div className="aspect-video relative overflow-hidden rounded-t-lg">
-											<img
+											<Image
 												src={blog.coverImage}
 												alt={blog.coverImageAlt || blog.title}
 												className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
