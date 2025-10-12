@@ -4,15 +4,15 @@ import { Blog } from "@/models/Blog";
 
 export async function GET(
 	request: NextRequest,
-	{ params }: { params: { id: string } }
+	{ params }: { params: Promise<{ slug: string }> }
 ) {
 	try {
 		await connectDB();
 
-		const { id } = params;
+		const { slug } = await params;
 
 		const blog = await Blog.findOne({
-			$or: [{ _id: id }, { slug: id }],
+			$or: [{ _id: slug }, { slug: slug }],
 			isPublished: true,
 		}).populate("author", "name image");
 
