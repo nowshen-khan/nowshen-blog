@@ -49,7 +49,7 @@ const MobileMenu = ({ logoText, navLinks }: MobileMenuProps) => {
 					</Link>
 
 					{/* Mobile Menu Items */}
-					<div className="flex-1 py-6">
+					<div className="flex-1">
 						<nav className="grid gap-2">
 							{navLinks.map((item, index) => (
 								<Link
