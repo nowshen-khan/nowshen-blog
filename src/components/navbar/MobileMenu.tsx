@@ -4,10 +4,10 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
-import { Button } from "./ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import Logo from "./Logo";
+import Logo from "@/components/Logo";
 interface MobileMenuProps {
 	logoText: string;
 	navLinks: NavLink[];

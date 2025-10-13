@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import Logo from "./Logo";
+import Logo from "@/components/Logo";
 import navbar from "@/data/navbar";
 import DesktopMenu from "./DesktopMenu";
 import MobileMenu from "./MobileMenu";
