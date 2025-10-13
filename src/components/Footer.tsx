@@ -1,5 +1,5 @@
 import React from "react";
-import footer, { FooterData } from "@/data/footer";
+import footer from "@/data/footer";
 import { Mail, X, Facebook, Linkedin, Github, Heart } from "lucide-react";
 import Link from "next/link";
 import Logo from "@/components/Logo";
@@ -33,9 +33,7 @@ const Footer = () => {
 		<footer className="border-t border-border mt-10 px-6">
 			<div className="container py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-4 px-10">
 				<div className="col-span-2">
-					<Link href="/">
-						<Logo logoText={logoText} footer={true} />
-					</Link>
+					<Logo logoText={logoText} variant={"footer"} />
 
 					<p className="text-sm text-muted-foreground mb-4">{aboutText}</p>
 					<div className="flex items-center gap-3 text-muted-foreground">

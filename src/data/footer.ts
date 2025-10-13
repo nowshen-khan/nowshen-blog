@@ -72,7 +72,7 @@ const footer = {
 		linkedin: "https://linkedin.com/in/nowshen",
 		email: "hello@nowshen.com",
 	},
-	location: "Gazipur, Bangladesh",
+	location: "Gazipur, Dhaka, Bangladesh",
 	copyright: "© 2025 blog.Nowshen",
 };
 
