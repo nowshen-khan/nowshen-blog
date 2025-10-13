@@ -5,11 +5,12 @@ import { Contact } from "@/models/Contact";
 // 🔹 GET — single contact
 export async function GET(
 	request: NextRequest,
-	{ params }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ) {
 	try {
 		await connectDB();
-		const contact = await Contact.findById(params.id);
+		const { id } = await params; // ✅ Await params and destructure
+		const contact = await Contact.findById(id); // ✅ Use the destructured id
 
 		if (!contact) {
 			return NextResponse.json({ error: "Contact not found" }, { status: 404 });
@@ -28,13 +29,14 @@ export async function GET(
 // 🔹 PUT — full update (body থেকে সব ফিল্ড update)
 export async function PUT(
 	request: NextRequest,
-	{ params }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ) {
 	try {
 		await connectDB();
+		const { id } = await params; // ✅ Await params and destructure
 		const body = await request.json();
 
-		const contact = await Contact.findByIdAndUpdate(params.id, body, {
+		const contact = await Contact.findByIdAndUpdate(id, body, {
 			new: true,
 			runValidators: true,
 		});
@@ -56,17 +58,18 @@ export async function PUT(
 // 🔹 PATCH — only status update (Mark as Read/Unread etc.)
 export async function PATCH(
 	request: NextRequest,
-	{ params }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ) {
 	try {
 		await connectDB();
+		const { id } = await params; // ✅ Await params and destructure
 		const { status } = await request.json();
 
 		if (!["new", "read", "replied", "closed"].includes(status)) {
 			return NextResponse.json({ error: "Invalid status" }, { status: 400 });
 		}
 
-		const contact = await Contact.findById(params.id);
+		const contact = await Contact.findById(id);
 		if (!contact) {
 			return NextResponse.json({ error: "Contact not found" }, { status: 404 });
 		}
@@ -91,11 +94,12 @@ export async function PATCH(
 // 🔹 DELETE — remove contact
 export async function DELETE(
 	request: NextRequest,
-	{ params }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ) {
 	try {
 		await connectDB();
-		const contact = await Contact.findByIdAndDelete(params.id);
+		const { id } = await params;
+		const contact = await Contact.findByIdAndDelete(id);
 
 		if (!contact) {
 			return NextResponse.json({ error: "Contact not found" }, { status: 404 });
