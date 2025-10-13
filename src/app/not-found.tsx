@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -44,7 +43,7 @@ export default function NotFound() {
 
 				{/* Search Bar */}
 				<SearchBar
-					placeholder="Search for articles, tutorials, or pages..."
+					placeholder="Search for blogs, tutorials, or pages..."
 					className="space-y-4"
 				/>
 				<p className="text-sm text-muted-foreground">
