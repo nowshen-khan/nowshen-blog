@@ -18,15 +18,43 @@ import connectDB from "@/lib/mongodb";
 import { About } from "@/models/About";
 import Link from "next/link";
 
+interface AboutSEO {
+	metaTitle?: string;
+	metaDescription?: string;
+	keywords?: string[];
+	ogImage?: string;
+}
+
+interface SocialLinks {
+	github?: string;
+	linkedin?: string;
+	email?: string;
+	website?: string;
+}
+
+interface AboutData {
+	title?: string;
+	subtitle?: string;
+	content?: string;
+	image?: string;
+	imageAlt?: string;
+	experience?: number;
+	projects?: number;
+	clients?: number;
+	skills?: string[];
+	socialLinks?: SocialLinks;
+	seo?: AboutSEO;
+}
+
 export async function generateMetadata(): Promise<Metadata> {
 	await connectDB();
-	let about;
+
+	let about: AboutData | null = null;
 
 	try {
 		about = await About.getAboutPage();
 	} catch (error) {
 		console.error("Failed to fetch about page:", error);
-		// Return default metadata if about page fails to load
 		return {
 			title: "About Me - Professional Profile",
 			description:
@@ -34,7 +62,6 @@ export async function generateMetadata(): Promise<Metadata> {
 		};
 	}
 
-	// Safe access with fallbacks
 	const metaTitle =
 		about?.seo?.metaTitle || about?.title || "About Me - Professional Profile";
 	const metaDescription =
@@ -51,7 +78,7 @@ export async function generateMetadata(): Promise<Metadata> {
 	return {
 		title: metaTitle,
 		description: metaDescription,
-		keywords: keywords,
+		keywords,
 		openGraph: {
 			title: metaTitle,
 			description: metaDescription,
@@ -76,13 +103,13 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function AboutPage() {
 	await connectDB();
-	let about;
+
+	let about: AboutData | null = null;
 
 	try {
 		about = await About.getAboutPage();
 	} catch (error) {
 		console.error("Failed to fetch about page:", error);
-		// Return a fallback UI if about page fails to load
 		return (
 			<div className="min-h-screen bg-background flex items-center justify-center">
 				<div className="text-center">
@@ -96,8 +123,7 @@ export default async function AboutPage() {
 		);
 	}
 
-	// Safe access with fallbacks for all properties
-	const safeAbout = {
+	const safeAbout: Required<AboutData> = {
 		title: about?.title || "About Me",
 		subtitle:
 			about?.subtitle || "Professional Developer & Technology Enthusiast",
@@ -135,7 +161,7 @@ export default async function AboutPage() {
 			value: `${safeAbout.clients}+`,
 			label: "Happy Clients",
 		},
-	];
+	] as const;
 
 	const socialLinks = [
 		{
@@ -160,7 +186,11 @@ export default async function AboutPage() {
 			href: safeAbout.socialLinks.website,
 			label: "Website",
 		},
-	].filter((link) => link.href);
+	].filter((link) => link.href) as {
+		icon: React.ComponentType<{ className?: string }>;
+		href: string;
+		label: string;
+	}[];
 
 	return (
 		<div className="min-h-screen bg-background">
@@ -188,7 +218,6 @@ export default async function AboutPage() {
 					<div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
 						{/* Left Column - Image & Stats */}
 						<div className="lg:col-span-1 space-y-8">
-							{/* Profile Image */}
 							<Card className="overflow-hidden">
 								<CardContent className="p-0">
 									<div className="relative aspect-square">
@@ -204,7 +233,6 @@ export default async function AboutPage() {
 								</CardContent>
 							</Card>
 
-							{/* Stats */}
 							<Card>
 								<CardContent className="p-6">
 									<h3 className="font-semibold text-lg mb-4 flex items-center">
@@ -230,7 +258,6 @@ export default async function AboutPage() {
 								</CardContent>
 							</Card>
 
-							{/* Social Links */}
 							{socialLinks.length > 0 && (
 								<Card>
 									<CardContent className="p-6">
@@ -263,7 +290,6 @@ export default async function AboutPage() {
 
 						{/* Right Column - Content & Skills */}
 						<div className="lg:col-span-2 space-y-8">
-							{/* About Content */}
 							<Card>
 								<CardContent className="p-8">
 									<div className="prose prose-slate dark:prose-invert max-w-none">
@@ -286,7 +312,6 @@ export default async function AboutPage() {
 								</CardContent>
 							</Card>
 
-							{/* Skills & Technologies */}
 							{safeAbout.skills.length > 0 && (
 								<Card>
 									<CardContent className="p-8">
@@ -309,7 +334,6 @@ export default async function AboutPage() {
 								</Card>
 							)}
 
-							{/* Call to Action */}
 							<Card className="bg-gradient-to-r from-slate-900 to-slate-700 text-white">
 								<CardContent className="p-8 text-center">
 									<h3 className="text-2xl font-bold mb-4">
