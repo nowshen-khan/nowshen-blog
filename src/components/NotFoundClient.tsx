@@ -3,7 +3,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Home, ArrowRight, RotateCcw } from "lucide-react";
-import SearchBar from "@/components/SearchBar";
+// import SearchBar from "@/components/SearchBar";
+import dynamic from "next/dynamic";
+
+// Load SearchBar only in browser, not during prerender
+const SearchBar = dynamic(() => import("@/components/SearchBar"), {
+	ssr: false,
+});
 
 const quickLinks = [
 	{ name: "Blog", href: "/blog" },
