@@ -18,7 +18,7 @@ export default function SearchBar({
 	className,
 }: SearchBarProps) {
 	const router = useRouter();
-	const searchParams = typeof window !== "undefined" ? useSearchParams() : null;
+	const searchParams = useSearchParams();
 	const [searchQuery, setSearchQuery] = useState(initialSearch);
 	const [isTyping, setIsTyping] = useState(false);
 
@@ -27,7 +27,7 @@ export default function SearchBar({
 		if (searchQuery === initialSearch) return;
 
 		const timeoutId = setTimeout(() => {
-			const params = new URLSearchParams(searchParams?.toString() || "");
+			const params = new URLSearchParams(searchParams?.toString());
 
 			if (searchQuery) {
 				params.set("search", searchQuery);
