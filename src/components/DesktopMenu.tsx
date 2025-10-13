@@ -43,7 +43,6 @@ const DesktopMenu = ({ navLinks }: DesktopMenuProps) => {
 						<Link href="/login">Sign In</Link>
 					</Button>
 					<Button asChild size="sm">
-						{/* <Link href="/register">Get Started</Link> */}
 						<Link href="#newsletter">Get Started</Link>
 					</Button>
 				</div>
