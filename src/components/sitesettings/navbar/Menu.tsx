@@ -19,7 +19,6 @@ import { Button } from "@/components/ui/button";
 import ModeToggle from "@/components/mode-toggle";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { getIconComponent } from "@/lib/getIconComponent";
 import Logo from "@/components/sitesettings/Logo";
 
 interface DesktopMenuProps {
