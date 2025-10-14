@@ -10,7 +10,8 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { scrollToNewsletter } from "@/utils/scrollToNewsletter";
 
 interface DesktopMenuProps {
 	navLinks: NavLink[];
@@ -18,10 +19,19 @@ interface DesktopMenuProps {
 
 const DesktopMenu = ({ navLinks }: DesktopMenuProps) => {
 	const pathname = usePathname();
+	const router = useRouter();
+
+	// Function to check if the link is active
 	const isActive = (href: string, exact: boolean = false) => {
 		if (!pathname) return false;
 		if (exact) return pathname === href;
 		return pathname.startsWith(href);
+	};
+
+	// Handle CTA button click
+	const handleClick = (e: React.MouseEvent) => {
+		e.preventDefault();
+		scrollToNewsletter(pathname, router);
 	};
 	return (
 		<>
@@ -56,8 +66,8 @@ const DesktopMenu = ({ navLinks }: DesktopMenuProps) => {
 					<Button asChild variant="ghost" size="sm">
 						<Link href="/login">Sign In</Link>
 					</Button>
-					<Button asChild size="sm">
-						<Link href="#newsletter">Get Started</Link>
+					<Button size="sm" onClick={handleClick}>
+						Get Started
 					</Button>
 				</div>
 			</div>

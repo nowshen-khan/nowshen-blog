@@ -2,12 +2,13 @@
 import { NavLink } from "@/data/navbar";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import Logo from "@/components/Logo";
+import { scrollToNewsletter } from "@/utils/scrollToNewsletter";
 interface MobileMenuProps {
 	logoText: string;
 	navLinks: NavLink[];
@@ -15,6 +16,9 @@ interface MobileMenuProps {
 
 const MobileMenu = ({ logoText, navLinks }: MobileMenuProps) => {
 	const pathname = usePathname();
+	const router = useRouter();
+
+	// Function to check if the link is active
 	const isActive = (href: string, exact: boolean = false) => {
 		if (!pathname) return false;
 		if (exact) return pathname === href;
@@ -22,6 +26,13 @@ const MobileMenu = ({ logoText, navLinks }: MobileMenuProps) => {
 	};
 
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+	// Handle CTA button click
+	const handleClick = (e: React.MouseEvent) => {
+		e.preventDefault();
+		scrollToNewsletter(pathname, router);
+		setIsMobileMenuOpen(false);
+	};
 	return (
 		<div className="flex md:hidden items-center gap-3">
 			<Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
@@ -72,20 +83,15 @@ const MobileMenu = ({ logoText, navLinks }: MobileMenuProps) => {
 					</div>
 
 					{/* Mobile Menu Footer */}
-					<div className="border-tspace-y-4 pb-2">
+					<div className="border-t space-y-4 pb-2">
 						<div className="space-y-2">
 							<Button asChild variant="outline" className="w-full">
 								<Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
 									Sign In
 								</Link>
 							</Button>
-							<Button asChild className="w-full">
-								<Link
-									href="#newsletter"
-									onClick={() => setIsMobileMenuOpen(false)}
-								>
-									Get Started
-								</Link>
+							<Button className="w-full" onClick={handleClick}>
+								Get Started
 							</Button>
 						</div>
 					</div>
