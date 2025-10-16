@@ -18,9 +18,9 @@ const navbar = {
 			label: "Home",
 		},
 		{
-			href: "/blog",
+			href: "/blogs",
 			order: 2,
-			label: "Blog",
+			label: "Blogs",
 		},
 		{
 			href: "/services",
