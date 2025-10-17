@@ -1,9 +1,8 @@
 import React from "react";
-import about, { About } from "@/data/about";
+import about from "@/data/about";
 import { Badge } from "@/components/ui/badge";
 import {
 	Award,
-	Briefcase,
 	Calendar,
 	Code,
 	Github,
@@ -18,6 +17,35 @@ import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export function generateMetadata(): Metadata {
+	const { seo } = about;
+	const { metaTitle, metaDescription, keywords, ogImage } = seo;
+
+	return {
+		title: metaTitle,
+		description: metaDescription,
+		keywords: keywords,
+		openGraph: {
+			title: metaTitle,
+			description: metaDescription,
+			images: [
+				{
+					url: ogImage,
+					width: 1200,
+					height: 630,
+				},
+			],
+		},
+		twitter: {
+			card: "summary_large_image",
+			title: metaTitle,
+			description: metaDescription,
+			images: [ogImage],
+		},
+	};
+}
 
 const AboutPage = () => {
 	const {
@@ -32,7 +60,6 @@ const AboutPage = () => {
 		skills,
 		socialLinks,
 		seo,
-		isActive,
 	} = about;
 
 	const stats = [
