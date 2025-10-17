@@ -40,7 +40,7 @@ const contactInfo = [
 		icon: MapPin,
 		title: "Visit Us",
 		description: "Come say hello at our office",
-		value: "Dhaka, Bangladesh",
+		value: "Gazipur, Dhaka, Bangladesh",
 		link: "https://maps.google.com",
 	},
 	{

@@ -11,6 +11,7 @@ import {
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ContactForm from "@/components/contact/ContactForm";
+import { Suspense } from "react";
 
 export function generateMetadata(): Metadata {
 	const { title, description, keywords } = seo;
@@ -126,7 +127,9 @@ const ContactPage = () => {
 									</CardDescription>
 								</CardHeader>
 								<CardContent>
-									<ContactForm />
+									<Suspense fallback={<div>Loading...</div>}>
+										<ContactForm />
+									</Suspense>
 								</CardContent>
 							</Card>
 						</div>
