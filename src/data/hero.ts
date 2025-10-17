@@ -1,5 +1,3 @@
-import React from "react";
-
 const hero = {
 	startYear: 2024,
 	welcomeText: "Welcome to My Digital Space",

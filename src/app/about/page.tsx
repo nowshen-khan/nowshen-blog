@@ -59,7 +59,6 @@ const AboutPage = () => {
 		clients,
 		skills,
 		socialLinks,
-		seo,
 	} = about;
 
 	const stats = [
