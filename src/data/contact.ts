@@ -72,7 +72,7 @@ const faqs = [
 	{
 		question: "What technologies do you work with?",
 		answer:
-			"We specialize in modern technologies including Next.js, React, Node.js, MongoDB, and Tailwind CSS.",
+			"We specialize in modern technologies including Next.js, React, Node.js, MongoDB, and Tailwind CSS, WordPress, and more.",
 	},
 	{
 		question: "Can you work with existing designs?",
@@ -80,5 +80,16 @@ const faqs = [
 			"Absolutely! We can work with your existing designs or create new ones based on your requirements.",
 	},
 ];
-export { seo, faqs, socialLinks };
+
+const services = [
+	{ value: "", label: "Select a service" },
+	{ value: "web-development", label: "Web Development" },
+	{ value: "mobile-apps", label: "Mobile Apps" },
+	{ value: "ui-ux-design", label: "UI/UX Design" },
+	{ value: "seo-marketing", label: "SEO & Marketing" },
+	{ value: "maintenance", label: "Maintenance & Support" },
+	{ value: "consulting", label: "Consulting Services" },
+	{ value: "other", label: "Other" },
+];
+export { seo, faqs, socialLinks, services };
 export default contactInfo;
