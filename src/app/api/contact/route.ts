@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
 			{
 				success: true,
 				message: "Thank you for your message! We will get back to you soon.",
-				contactId: contact._id, //.toString(),
+				contactId: contact._id.toString(),
 			},
 			{ status: 201 }
 		);
