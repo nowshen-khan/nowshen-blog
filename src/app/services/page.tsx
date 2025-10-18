@@ -9,10 +9,10 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check, Star, ArrowRight } from "lucide-react";
-import connectDB from "@/lib/mongodb";
-import { Service } from "@/models/Service";
+// import connectDB from "@/lib/mongodb";
+// import { Service } from "@/models/Service";
 import PageHero from "@/components/hero/PageHero";
-import { seo } from "@/data/service";
+import { seo, services } from "@/data/service";
 
 export const metadata: Metadata = {
 	title: seo.title,
@@ -21,8 +21,8 @@ export const metadata: Metadata = {
 };
 
 export default async function ServicesPage() {
-	await connectDB();
-	const services = await Service.find({ isActive: true }).sort({ order: 1 });
+	//await connectDB();
+	//const services = await Service.find({ isActive: true }).sort({ order: 1 });
 
 	const formatPrice = (price: number, type: string) => {
 		if (type === "free") return "Free";

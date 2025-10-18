@@ -84,9 +84,6 @@ const faqs = [
 const services = [
 	{ value: "", label: "Select a service" },
 	{ value: "web-development", label: "Web Development" },
-	{ value: "mobile-apps", label: "Mobile Apps" },
-	{ value: "ui-ux-design", label: "UI/UX Design" },
-	{ value: "seo-marketing", label: "SEO & Marketing" },
 	{ value: "maintenance", label: "Maintenance & Support" },
 	{ value: "consulting", label: "Consulting Services" },
 	{ value: "other", label: "Other" },
