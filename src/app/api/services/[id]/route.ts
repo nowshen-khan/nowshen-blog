@@ -54,10 +54,15 @@ export async function PUT(
 		}
 
 		return NextResponse.json(service);
-	} catch (error) {
+	} catch (error: unknown) {
 		console.error("Failed to update service:", error);
 
-		if (error.code === 11000) {
+		if (
+			typeof error === "object" &&
+			error !== null &&
+			"code" in error &&
+			(error as { code?: number }).code === 11000
+		) {
 			return NextResponse.json(
 				{ error: "Service with this slug already exists" },
 				{ status: 400 }
@@ -65,7 +70,9 @@ export async function PUT(
 		}
 
 		return NextResponse.json(
-			{ error: "Internal server error" },
+			{
+				error: error instanceof Error ? error.message : "Internal server error",
+			},
 			{ status: 500 }
 		);
 	}
